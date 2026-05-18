@@ -3,6 +3,8 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import ConfirmModal from "../components/ConfirmModal";
+import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const Appointments = () => {
   const { backendUrl, token, getDoctorsData, currencySymbol } =
@@ -92,19 +94,26 @@ const Appointments = () => {
   }, [token]);
 
   return (
-    <div>
-      <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <p className="pb-3 mt-12 font-medium text-zinc-700 border-b border-[var(--border)]">
         My Appointments
       </p>
       <div>
         {appointments.map((doc, index) => (
-          <div
-            className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b"
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
+            className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b border-[var(--border)]"
             key={index}
           >
             <div>
               <img
-                className="w-32 bg-indigo-50 rounded"
+                className="w-32 bg-[var(--muted-bg)] rounded"
                 src={doc.docData.image}
                 alt=""
               />
@@ -127,74 +136,79 @@ const Appointments = () => {
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
               {!doc.payment && !doc.cancelled && !doc.isCompleted && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => handlePayClick(doc._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300"
+                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer border-[var(--border)]"
                 >
                   Pay Online
-                </button>
+                </motion.button>
               )}
 
               {doc.payment && !doc.cancelled && !doc.isCompleted && (
-                <button className="text-sm text-white bg-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded">
+                <button className="text-sm text-white bg-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded cursor-pointer">
                   Payment Completed
                 </button>
               )}
 
               {!doc.cancelled && !doc.isCompleted && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => handleCancelClick(doc._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
+                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer border-[var(--border)]"
                 >
                   Cancel appointment
-                </button>
+                </motion.button>
               )}
 
               {doc.cancelled && !doc.isCompleted && (
-                <button className="text-sm text-red-500 text-center sm:min-w-48 py-2 border border-red-500 rounded">
+                <button className="text-sm text-red-500 text-center sm:min-w-48 py-2 border border-red-500 rounded cursor-pointer">
                   Appointment Cancelled
                 </button>
               )}
 
               {doc.isCompleted && (
-                <button className="text-sm text-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded">
+                <button className="text-sm text-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded cursor-pointer">
                   Appointment Completed
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      {/* Global Confirmation Modal */}
-      {modalContext && getSelectedAppointment() && (
-        <ConfirmModal
-          title={
-            modalContext.type === "payment"
-              ? "Confirm Payment"
-              : "Cancel Appointment"
-          }
-          message={
-            modalContext.type === "payment"
-              ? `Do you want to proceed with the consultation fee of ${currencySymbol}${
-                  getSelectedAppointment().docData.fees
-                }?`
-              : "Are you sure you want to cancel this appointment?"
-          }
-          confirmText={
-            modalContext.type === "payment" ? "Make Payment" : "Yes, Cancel"
-          }
-          cancelText={modalContext.type === "payment" ? "Cancel" : "No"}
-          onConfirm={() => {
-            modalContext.type === "payment"
-              ? makePayment(modalContext.appointmentId)
-              : cancelAppointment(modalContext.appointmentId);
-            setModalContext(null);
-          }}
-          onCancel={() => setModalContext(null)}
-        />
-      )}
-    </div>
+      <AnimatePresence>
+        {modalContext && getSelectedAppointment() && (
+          <ConfirmModal
+            title={
+              modalContext.type === "payment"
+                ? "Confirm Payment"
+                : "Cancel Appointment"
+            }
+            message={
+              modalContext.type === "payment"
+                ? `Do you want to proceed with the consultation fee of ${currencySymbol}${
+                    getSelectedAppointment().docData.fees
+                  }?`
+                : "Are you sure you want to cancel this appointment?"
+            }
+            confirmText={
+              modalContext.type === "payment" ? "Make Payment" : "Yes, Cancel"
+            }
+            cancelText={modalContext.type === "payment" ? "Cancel" : "No"}
+            onConfirm={() => {
+              modalContext.type === "payment"
+                ? makePayment(modalContext.appointmentId)
+                : cancelAppointment(modalContext.appointmentId);
+              setModalContext(null);
+            }}
+            onCancel={() => setModalContext(null)}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

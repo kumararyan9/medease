@@ -32,7 +32,6 @@ const App = () => {
         }
       />
 
-      {/* Admin Routes */}
       <Route
         path="/admin/*"
         element={
@@ -46,7 +45,6 @@ const App = () => {
         }
       />
 
-      {/* Doctor Routes */}
       <Route
         path="/doctor/*"
         element={
@@ -60,7 +58,6 @@ const App = () => {
         }
       />
 
-      {/* Catch-All */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

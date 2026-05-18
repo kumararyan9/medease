@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
+import { motion } from "framer-motion";
 
 const AllAppointments = () => {
   const { aToken, appointments, getAllAppointments, cancelAppointment } =
@@ -15,10 +16,15 @@ const AllAppointments = () => {
     }
   }, [aToken]);
   return (
-    <div className="w-full max-w-6xl m-5">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="w-full max-w-6xl m-5"
+    >
       <p className="mb-3 text-lg font-medium">All Appointments</p>
-      <div className="bg-white border border-gray-400 rounded text-sm min-h-[60vh] max-h-[80vh] overflow-y-scroll">
-        <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-gray-400">
+      <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded text-sm min-h-[60vh] max-h-[80vh] overflow-y-scroll">
+        <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] grid-flow-col py-3 px-6 border-b border-[var(--border)]">
           <p>#</p>
           <p>Patient</p>
           <p>Age</p>
@@ -31,7 +37,7 @@ const AllAppointments = () => {
         {[...appointments].reverse().map((item, index) => (
           <div
             key={index}
-            className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b border-gray-400 hover:bg-gray-50"
+            className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b border-[var(--border)] hover:bg-gray-50"
           >
             <p className="max-sm:hidden">{index + 1}</p>
             <div className="flex items-center gap-2">
@@ -62,7 +68,7 @@ const AllAppointments = () => {
               className={`text-xs w-fit border px-2 rounded-full ${
                 item.payment
                   ? "bg-green-400 text-white border-green-600"
-                  : "text-primary border-primary"
+                  : "text-[var(--primary)] border-[var(--primary)]"
               }`}
             >
               {item.payment ? "ONLINE" : "CASH"}
@@ -83,7 +89,7 @@ const AllAppointments = () => {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

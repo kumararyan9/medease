@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 const ConfirmModal = ({
   title,
   message,
@@ -9,30 +11,47 @@ const ConfirmModal = ({
   const isCancel = title?.toLowerCase().includes("cancel");
 
   return (
-    <div className="fixed inset-0 bg-black/10 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-md text-center max-w-sm w-full">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      onClick={onCancel}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-[var(--card-bg)] p-6 rounded-lg shadow-md text-center max-w-sm w-full border border-[var(--border)]"
+      >
         <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <p className="mb-6">{message}</p>
         <div className="flex justify-center gap-4">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={onConfirm}
-            className={`text-white px-4 py-2 rounded ${
+            className={`text-white px-4 py-2 rounded cursor-pointer ${
               isCancel
                 ? "bg-red-600 hover:bg-red-700"
-                : "bg-primary hover:bg-blue-700"
+                : "bg-[var(--primary)] hover:bg-[var(--primary-hover)]"
             }`}
           >
             {confirmText}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={onCancel}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
           >
             {cancelText}
-          </button>
+          </motion.button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

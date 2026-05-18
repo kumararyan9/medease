@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
+import { motion } from "framer-motion";
 
 const DoctorDashboard = () => {
   const {
@@ -21,9 +22,14 @@ const DoctorDashboard = () => {
 
   return (
     dashData && (
-      <div className="m-5">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="m-5"
+      >
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.earning_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -33,7 +39,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.appointment_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -43,7 +49,7 @@ const DoctorDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.patients_icon} alt="" />
             <div>
               <p className="text-xl font-semibold text-gray-600">
@@ -54,16 +60,15 @@ const DoctorDashboard = () => {
           </div>
         </div>
 
-        {/* latest Appointments */}
-        <div className="bg-white">
-          <div className="flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border border-gray-400">
+        <div className="bg-[var(--card-bg)]">
+          <div className="flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border border-[var(--border)]">
             <img src={assets.list_icon} alt="" />
             <p className="font-semibold">latest Appointments</p>
           </div>
-          <div className="border border-t-0 border-gray-400">
+          <div className="border border-t-0 border-[var(--border)]">
             {dashData.latestAppointments.map((item, index) => (
               <div
-                className="flex items-center px-6 py-3 gap-3 hover:bg-gray-100"
+                className="flex items-center px-6 py-3 gap-3 hover:bg-gray-50"
                 key={index}
               >
                 <img
@@ -105,7 +110,7 @@ const DoctorDashboard = () => {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     )
   );
 };

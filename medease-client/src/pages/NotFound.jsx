@@ -1,28 +1,47 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-20 px-4 min-h-[80vh] bg-gradient-to-br from-pink-100 via-blue-100 to-purple-100 rounded-lg">
-      <h1 className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-bounce mb-4">
-        404
-      </h1>
-      <p className="text-2xl font-semibold text-gray-800 mb-2">
-        Oops! Page not found.
-      </p>
-      <p className="text-gray-600 mb-6 max-w-md">
-        It seems like you’re lost in the internet cosmos. Let's get you back to
-        the homepage!
-      </p>
-      <Link
-        to="/"
-        className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+    <div className="flex flex-col items-center justify-center text-center py-20 px-4 min-h-[80vh] bg-[var(--muted-bg)] rounded-lg">
+      <motion.h1
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+        className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] mb-4"
       >
-        🚀 Back to Home
-      </Link>
+        404
+      </motion.h1>
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="text-2xl font-semibold text-[var(--foreground)] mb-2"
+      >
+        Oops! Page not found.
+      </motion.p>
+      <motion.p
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="text-[var(--foreground)] mb-6 max-w-md"
+      >
+        It seems like you're lost in the internet cosmos. Let's get you back to
+        the homepage!
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        <Link
+          to="/"
+          className="px-6 py-3 bg-[var(--primary)] text-white font-medium rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 inline-block"
+        >
+          Back to Home
+        </Link>
+      </motion.div>
 
-      <p className="mt-10 text-sm text-gray-500">
-        Made with ❤️ by <span className="font-semibold text-gray-700">Kumar Aryan</span>
-      </p>
     </div>
   );
 };

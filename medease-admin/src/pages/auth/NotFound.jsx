@@ -1,28 +1,31 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-20 px-4 min-h-[100vh] bg-gradient-to-br from-pink-100 via-blue-100 to-purple-100 rounded-lg">
-      <h1 className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-bounce mb-4">
-        404
-      </h1>
-      <p className="text-2xl font-semibold text-gray-800 mb-2">
-        Oops! Page not found.
-      </p>
-      <p className="text-gray-600 mb-6 max-w-md">
-        It seems like you’re lost in the internet cosmos. Let's get you back to
-        the homepage!
-      </p>
-      <Link
-        to="/"
-        className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300"
+    <div className="flex items-center justify-center min-h-[80vh] bg-[var(--background)]">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="text-center"
       >
-        🚀 Back to Home
-      </Link>
-
-      <p className="mt-10 text-sm text-gray-500">
-        Made with ❤️ by <span className="font-semibold text-gray-700">Kumar Aryan</span>
-      </p>
+        <h1 className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">
+          404
+        </h1>
+        <p className="text-2xl mt-4 text-gray-600 font-semibold">
+          Page Not Found
+        </p>
+        <p className="text-gray-500 mt-2">
+          The page you are looking for does not exist.
+        </p>
+        <Link
+          to="/"
+          className="inline-block mt-6 px-6 py-3 bg-[var(--primary)] text-white font-medium rounded-full hover:bg-[var(--primary-hover)] transition-colors"
+        >
+          Back to Login
+        </Link>
+      </motion.div>
     </div>
   );
 };

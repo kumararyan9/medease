@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const { backendUrl, setToken, token } = useContext(AppContext);
@@ -58,16 +59,18 @@ const Login = () => {
   }, [token]);
 
   return (
-    <form
+    <motion.form
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
       onSubmit={onSubmitHandler}
       className="min-h-[80vh] flex flex-col items-center"
     >
-      {/* <div className="flex flex-col items-center w-full"> */}
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340] sm:min-w-96 border rounded-xl text-sm shadow-lg bg-[var(--card-bg)] border-[var(--border)]">
         <p className="text-2xl font-semibold">
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
-        <p>
+        <p className="text-gray-500">
           Please {state === "Sign Up" ? "sign up" : "log in"} to book
           appointment!
         </p>
@@ -75,7 +78,7 @@ const Login = () => {
           <div className="w-full">
             <p>Full Name</p>
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
+              className="border rounded w-full p-2 mt-1 bg-[var(--card-bg)] border-[var(--border)]"
               type="text"
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -86,7 +89,7 @@ const Login = () => {
         <div className="w-full">
           <p>Email</p>
           <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="border rounded w-full p-2 mt-1 bg-[var(--card-bg)] border-[var(--border)]"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
@@ -97,25 +100,27 @@ const Login = () => {
         <div className="w-full">
           <p>Password</p>
           <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
+            className="border rounded w-full p-2 mt-1 bg-[var(--card-bg)] border-[var(--border)]"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             required
           />
         </div>
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="submit"
-          className="bg-primary text-white w-full py-2 rounded-md text-base"
+          className="bg-[var(--primary)] text-white w-full py-2 rounded-md text-base cursor-pointer"
         >
           {state === "Sign Up" ? "Create Account" : "Login"}
-        </button>
+        </motion.button>
         {state === "Sign Up" ? (
           <p>
             Already have an account?{" "}
             <span
               onClick={() => setState("Login")}
-              className="text-primary underline cursor-pointer"
+              className="text-[var(--primary)] underline cursor-pointer"
             >
               Login here
             </span>
@@ -125,27 +130,25 @@ const Login = () => {
             Don't have an account?{" "}
             <span
               onClick={() => setState("Sign Up")}
-              className="text-primary underline cursor-pointer"
+              className="text-[var(--primary)] underline cursor-pointer"
             >
               Sign-up here
             </span>
           </p>
         )}
       </div>
-      {/* ----- ADMIN PORTAL LOGIN LINK ----- */}
-      <p className="mt-10 text-zinc-600 text-center w-full">
+      <p className="mt-10 text-gray-500 text-center w-full">
         Are you a Doctor or Admin?{" "}
         <a
           href={import.meta.env.VITE_ADMIN_URL || "/admin"}
-          className="text-primary underline"
+          className="text-[var(--primary)] underline"
           target="_blank"
           rel="noopener noreferrer"
         >
           Login here
         </a>
       </p>
-      {/* </div> */}
-    </form>
+    </motion.form>
   );
 };
 
