@@ -1,13 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 
-*{
+* {
   font-family: Outfit;
 }
 
-
 @theme {
-  --color-primary: #5f6fff;
+  --color-primary: #0F6E56;
+}
+
+@layer base {
+  :root {
+    --background: #FFFFFF;
+    --foreground: #1A1A1A;
+    --primary: #0F6E56;
+    --primary-hover: #0A4E3D;
+    --accent: #1D9E75;
+    --muted-bg: #E1F5EE;
+    --card-bg: #FFFFFF;
+    --border: #E5E7EB;
+    --radius: 0.5rem;
+  }
+
+  [data-theme="dark"] {
+    --background: #0B0F12;
+    --foreground: #F3F4F6;
+    --primary: #1D9E75;
+    --primary-hover: #24C08F;
+    --accent: #0F6E56;
+    --muted-bg: #14221F;
+    --card-bg: #13191C;
+    --border: #1F2937;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 }
 
 ::-webkit-scrollbar {

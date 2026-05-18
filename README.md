@@ -183,8 +183,6 @@ Copy each `.env.example` to `.env` and replace the placeholder values.
 
 **Kumar Aryan**
 
-Made with ❤️ by Kumar Aryan
-
 ---
 
 ## Acknowledgments

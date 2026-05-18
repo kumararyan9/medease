@@ -1,11 +1,16 @@
 import { assets } from "../assets/assets_frontend/assets";
+import { motion } from "framer-motion";
 
 const About = () => {
   return (
-    <div>
-      <div className="text-center text-2xl pt-10 text-gray-500">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="text-center text-2xl pt-10 text-[var(--foreground)]">
         <p>
-          ABOUT <span className="text-gray-700 font-medium">US</span>
+          ABOUT <span className="text-[var(--foreground)] font-medium">US</span>
         </p>
       </div>
 
@@ -15,7 +20,7 @@ const About = () => {
           src={assets.about_image}
           alt=""
         />
-        <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600 capitalize">
+        <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-[var(--foreground)] capitalize">
           <p>
             Welcome to MedEase, your trusted partner in managing your
             healthcare needs conveniently and efficiently. At MedEase, we
@@ -30,7 +35,7 @@ const About = () => {
             ongoing care, MedEase is Here To Support You Every Step Of The
             Way
           </p>
-          <b className="text-gray-800">Our Vision</b>
+          <b className="text-[var(--foreground)]">Our Vision</b>
           <p>
             Our Vision At MedEase Is to A seamless Healthcare Experience for
             Every User. We Aim To Bridge The Gap between Patients And Healthcare
@@ -42,24 +47,38 @@ const About = () => {
 
       <div className="text-xl my-4">
         <p className="uppercase">
-          Why <span className="text-gray-700 font-semibold">Choose Us</span>
+          Why <span className="text-[var(--foreground)] font-semibold">Choose Us</span>
         </p>
       </div>
       <div className="flex flex-col md:flex-row mb-20">
-        <div className="border border-gray-300 px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer">
-          <b>Efficiency:</b>
-          <p>Streamlined appointment scheduling that fits into your busy lifestyle.</p>
-        </div>
-        <div className="border border-gray-300 px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer">
-          <b>Convenience:</b>
-          <p>Access to a network of trusted healthcare professionals in your area.</p>
-        </div>
-        <div className="border border-gray-300 px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer">
-          <b>Personalization:</b>
-          <p>Tailored recommendations and reminders to help you stay on top of your health.</p>
-        </div>
+        {[
+          {
+            title: "Efficiency",
+            desc: "Streamlined appointment scheduling that fits into your busy lifestyle.",
+          },
+          {
+            title: "Convenience",
+            desc: "Access to a network of trusted healthcare professionals in your area.",
+          },
+          {
+            title: "Personalization",
+            desc: "Tailored recommendations and reminders to help you stay on top of your health.",
+          },
+        ].map((item, index) => (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            key={index}
+            className="border border-[var(--border)] px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-[var(--primary)] hover:text-white transition-all duration-300 text-[var(--foreground)] cursor-pointer"
+          >
+            <b>{item.title}</b>
+            <p>{item.desc}</p>
+          </motion.div>
+        ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

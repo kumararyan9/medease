@@ -3,6 +3,7 @@ import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const AddDoctor = () => {
   const [docImg, setDocImg] = useState(false);
@@ -73,9 +74,15 @@ const AddDoctor = () => {
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className="m-5 w-full">
+    <motion.form
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      onSubmit={onSubmitHandler}
+      className="m-5 w-full"
+    >
       <p className="mb-3 text-lg font-medium">Add Doctor</p>
-      <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
+      <div className="bg-[var(--card-bg)] px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll border-[var(--border)]">
         <div className="flex items-center gap-4 mb-8 text-gray-500">
           <label htmlFor="doc-img">
             <img
@@ -98,7 +105,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor name</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
                 type="text"
@@ -109,7 +116,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor email</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 type="email"
@@ -120,7 +127,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor password</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 type="password"
@@ -131,7 +138,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Experience</p>
               <select
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setExperience(e.target.value)}
                 value={experience}
                 required
@@ -152,7 +159,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor Fee</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setFees(e.target.value)}
                 value={fees}
                 type="number"
@@ -165,7 +172,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Speciality</p>
               <select
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setSpeciality(e.target.value)}
                 value={speciality}
                 required
@@ -182,7 +189,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Education</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setDegree(e.target.value)}
                 value={degree}
                 type="text"
@@ -193,7 +200,7 @@ const AddDoctor = () => {
             <div className="flex-1 flex flex-col gap-1">
               <p>Address</p>
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)] mb-2"
                 onChange={(e) => setAddress1(e.target.value)}
                 value={address1}
                 type="text"
@@ -201,7 +208,7 @@ const AddDoctor = () => {
                 required
               />
               <input
-                className="border rounded px-3 py-2 border-gray-300"
+                className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
                 onChange={(e) => setAddress2(e.target.value)}
                 value={address2}
                 type="text"
@@ -213,7 +220,7 @@ const AddDoctor = () => {
         <div>
           <p className="mt-4 mb-2 text-gray-600">About doctor</p>
           <textarea
-            className="w-full border rounded px-4 pt-2 border-gray-300"
+            className="w-full border rounded px-4 pt-2 border-[var(--border)] bg-[var(--background)]"
             onChange={(e) => setAbout(e.target.value)}
             value={about}
             placeholder="Write about doctor"
@@ -222,14 +229,16 @@ const AddDoctor = () => {
           />
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           type="submit"
-          className="bg-primary text-white px-10 py-3 mt-4 rounded-full"
+          className="bg-[var(--primary)] text-white px-10 py-3 mt-4 rounded-full cursor-pointer"
         >
           Add doctor
-        </button>
+        </motion.button>
       </div>
-    </form>
+    </motion.form>
   );
 };
 
