@@ -11,7 +11,7 @@ class BaseRepository {
     return this.model.findOne(filter, null, options);
   }
 
-  async find(filter = {}, options = {}) {
+  find(filter = {}, options = {}) {
     return this.model.find(filter, null, options);
   }
 

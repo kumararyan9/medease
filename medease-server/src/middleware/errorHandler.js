@@ -1,4 +1,4 @@
-import logger from '@/config/logger.js';
+import logger from '@/utils/logger.js';
 import env from '@/config/env.js';
 import AppError from '@/utils/AppError.js';
 
@@ -6,12 +6,7 @@ const errorHandler = (err, req, res, _next) => {
   const traceId = req.traceId || null;
 
   if (err instanceof AppError) {
-    logger.warn('Operational error', {
-      traceId,
-      message: err.message,
-      statusCode: err.statusCode,
-      details: err.details,
-    });
+    logger.warn({ traceId, message: err.message, statusCode: err.statusCode, details: err.details }, 'Operational error');
     return res.status(err.statusCode).json({
       success: false,
       message: err.message,
@@ -63,11 +58,7 @@ const errorHandler = (err, req, res, _next) => {
     });
   }
 
-  logger.error('Unhandled error', {
-    traceId,
-    message: err.message,
-    stack: err.stack,
-  });
+  logger.error({ traceId, message: err.message, stack: err.stack }, 'Unhandled error');
 
   return res.status(500).json({
     success: false,

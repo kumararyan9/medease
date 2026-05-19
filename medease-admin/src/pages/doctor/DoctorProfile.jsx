@@ -58,11 +58,11 @@ const DoctorProfile = () => {
               />
             </div>
 
-            <div className="flex-1 border border-stone-100 rounded-lg p-8 py-7 bg-[var(--card-bg)]">
-              <p className="flex items-center gap-2 text-3xl font-medium text-gray-700">
+            <div className="flex-1 border border-[var(--border)] rounded-lg p-8 py-7 bg-[var(--card-bg)]">
+              <p className="flex items-center gap-2 text-3xl font-medium text-[var(--foreground)]">
                 {profileData.name}
               </p>
-              <div className="flex items-center gap-2 mt-1 text-gray-600">
+              <div className="flex items-center gap-2 mt-1 text-[var(--foreground)]">
                 <p>
                   {profileData.degree} - {profileData.speciality}
                 </p>
@@ -72,17 +72,17 @@ const DoctorProfile = () => {
               </div>
 
               <div>
-                <p className="flex items-center gap-1 text-sm font-medium text-neutral-800 mt-3">
+                <p className="flex items-center gap-1 text-sm font-medium text-[var(--foreground)] mt-3">
                   About:
                 </p>
-                <p className="text-sm text-gray-600 max-w-[700px] mt-1 text-justify">
+                <p className="text-sm text-[var(--foreground)] max-w-[700px] mt-1 text-justify">
                   {profileData.about}
                 </p>
               </div>
 
-              <p className="text-gray-600 font-medium mt-4">
+              <p className="text-[var(--foreground)] font-medium mt-4">
                 Appointment fee:{" "}
-                <span className="text-gray-800">
+                <span className="text-[var(--foreground)]">
                   {currencySymbol}{" "}
                   {isEdit ? (
                     <input

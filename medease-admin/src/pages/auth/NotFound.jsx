@@ -13,10 +13,10 @@ const NotFound = () => {
         <h1 className="text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">
           404
         </h1>
-        <p className="text-2xl mt-4 text-gray-600 font-semibold">
+        <p className="text-2xl mt-4 text-[var(--foreground)] font-semibold">
           Page Not Found
         </p>
-        <p className="text-gray-500 mt-2">
+        <p className="text-[var(--foreground)] mt-2">
           The page you are looking for does not exist.
         </p>
         <Link

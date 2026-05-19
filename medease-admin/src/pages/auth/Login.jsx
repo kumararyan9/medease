@@ -54,14 +54,14 @@ const Login = () => {
       onSubmit={onSubmitHandler}
       className="min-h-[80vh] flex items-center"
     >
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-[var(--border)] rounded-xl text-[#5E5E5E] text-sm shadow-lg bg-[var(--card-bg)]">
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-[var(--border)] rounded-xl text-[var(--foreground)] text-sm shadow-lg bg-[var(--card-bg)]">
         <p className="text-2xl font-semibold m-auto">
           <span className="text-[var(--primary)]">{state}</span> Login
         </p>
         <div className="w-full">
           <p>Email</p>
           <input
-            className="border border-[#DADADA] rounded w-full p-2 mt-1 bg-[var(--card-bg)]"
+            className="border border-[var(--border)] rounded w-full p-2 mt-1 bg-[var(--card-bg)]"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
             type="email"
@@ -71,7 +71,7 @@ const Login = () => {
         <div className="w-full">
           <p>Password</p>
           <input
-            className="border border-[#DADADA] rounded w-full p-2 mt-1 bg-[var(--card-bg)]"
+            className="border border-[var(--border)] rounded w-full p-2 mt-1 bg-[var(--card-bg)]"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
@@ -86,7 +86,7 @@ const Login = () => {
           Login
         </motion.button>
         {state === "Admin" ? (
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-[var(--foreground)] mt-2">
             Are you a Doctor?{" "}
             <span
               className="text-[var(--primary)] underline cursor-pointer"
@@ -96,7 +96,7 @@ const Login = () => {
             </span>
           </p>
         ) : (
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-[var(--foreground)] mt-2">
             Are you an Admin?{" "}
             <span
               className="text-[var(--primary)] underline cursor-pointer"

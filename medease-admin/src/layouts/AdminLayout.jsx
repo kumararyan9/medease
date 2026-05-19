@@ -21,8 +21,8 @@ const AdminLayout = () => (
         <Route path="*" element={<NotAuthorized />} />
       </Routes>
     </div>
-    <footer className="text-center py-4 text-sm text-gray-500 border-t bg-[var(--card-bg)] border-[var(--border)]">
-      Made by <span className="font-semibold text-gray-700">Kumar Aryan</span> &nbsp;|&nbsp; © {new Date().getFullYear()} MedEase
+    <footer className="text-center py-4 text-sm text-[var(--foreground)] border-t bg-[var(--card-bg)] border-[var(--border)]">
+      Made by <span className="font-semibold">Kumar Aryan</span> &nbsp;|&nbsp; © {new Date().getFullYear()} MedEase
     </footer>
   </div>
 );

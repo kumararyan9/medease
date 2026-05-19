@@ -37,7 +37,7 @@ const AllAppointments = () => {
         {[...appointments].reverse().map((item, index) => (
           <div
             key={index}
-            className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b border-[var(--border)] hover:bg-gray-50"
+            className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr_1fr] items-center text-[var(--foreground)] py-3 px-6 border-b border-[var(--border)] hover:bg-[var(--muted-bg)]"
           >
             <p className="max-sm:hidden">{index + 1}</p>
             <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ const AllAppointments = () => {
             </p>
             <div className="flex items-center gap-2">
               <img
-                className="w-8 rounded-full bg-gray-200"
+                className="w-8 rounded-full bg-[var(--muted-bg)]"
                 src={item.docData.image}
                 alt=""
               />

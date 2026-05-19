@@ -18,8 +18,8 @@ const DoctorCard = ({ doctor }) => {
         alt={doctor.name}
       />
       <div className="p-4 bg-[var(--card-bg)]">
-        <p className="text-neutral-800 text-lg font-medium">{doctor.name}</p>
-        <p className="text-zinc-600 text-sm">{doctor.speciality}</p>
+        <p className="text-[var(--foreground)] text-lg font-medium">{doctor.name}</p>
+        <p className="text-[var(--foreground)] text-sm">{doctor.speciality}</p>
         <div className="flex items-center mt-2 gap-1 text-sm">
           <input
             onChange={() => changeAvailability(doctor._id)}
