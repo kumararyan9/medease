@@ -25,10 +25,6 @@ const corsMiddleware = (req, res, next) => {
     allowed = true;
   }
 
-  console.log(`[CORS] Incoming Origin: ${origin}`);
-  console.log(`[CORS] Allowed origins: ${JSON.stringify(allowedOrigins)}`);
-  console.log(`[CORS] Decision: ${allowed ? 'ALLOWED' : 'BLOCKED'}`);
-
   if (!allowed) {
     return res.status(403).json({ success: false, message: 'Origin not allowed' });
   }

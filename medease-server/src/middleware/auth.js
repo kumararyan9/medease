@@ -35,6 +35,11 @@ const authenticate = asyncHandler(async (req, res, next) => {
     throw new AppError('Invalid token', 401);
   }
 
+  if (decoded.id === 'admin') {
+    req.user = { id: 'admin', role: 'ADMIN', roleSlug: 'admin', permissions: [], name: 'Admin' };
+    return next();
+  }
+
   const user = await User.findById(decoded.id).select('-password').populate('roleId');
   if (!user) {
     throw new AppError('User not found', 401);

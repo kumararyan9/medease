@@ -87,10 +87,10 @@ const AddDoctor = () => {
     >
       <p className="mb-3 text-lg font-medium">Add Doctor</p>
       <div className="bg-[var(--card-bg)] px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll border-[var(--border)]">
-        <div className="flex items-center gap-4 mb-8 text-gray-500">
+        <div className="flex items-center gap-4 mb-8 text-[var(--foreground)]">
           <label htmlFor="doc-img">
             <img
-              className="w-16 bg-gray-100 rounded-full cursor-pointer"
+              className="w-16 bg-[var(--muted-bg)] rounded-full cursor-pointer"
               src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
               alt=""
             />
@@ -104,7 +104,7 @@ const AddDoctor = () => {
           <p>Upload Doctor picture</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
+        <div className="flex flex-col lg:flex-row items-start gap-10 text-[var(--foreground)]">
           <div className="w-full lg:flex-1 flex flex-col gap-4">
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor name</p>
@@ -212,7 +212,7 @@ const AddDoctor = () => {
           </div>
         </div>
         <div>
-          <p className="mt-4 mb-2 text-gray-600">About doctor</p>
+          <p className="mt-4 mb-2 text-[var(--foreground)]">About doctor</p>
           <textarea
             className="w-full border rounded px-4 pt-2 border-[var(--border)] bg-[var(--background)]"
             onChange={(e) => setAbout(e.target.value)}

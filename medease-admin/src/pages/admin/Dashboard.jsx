@@ -23,33 +23,33 @@ const Dashboard = () => {
         className="m-5"
       >
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-[var(--border)] cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.doctor_icon} alt="" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">
+              <p className="text-xl font-semibold text-[var(--foreground)]">
                 {dashData.doctors}
               </p>
-              <p className="text-gray-400">Doctors</p>
+              <p className="text-[var(--foreground)]">Doctors</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-[var(--border)] cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.appointment_icon} alt="" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">
+              <p className="text-xl font-semibold text-[var(--foreground)]">
                 {dashData.appointments}
               </p>
-              <p className="text-gray-400">Appointments</p>
+              <p className="text-[var(--foreground)]">Appointments</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
+          <div className="flex items-center gap-2 bg-[var(--card-bg)] p-4 min-w-52 rounded border-2 border-[var(--border)] cursor-pointer hover:scale-105 transition-all">
             <img className="w-14" src={assets.patients_icon} alt="" />
             <div>
-              <p className="text-xl font-semibold text-gray-600">
+              <p className="text-xl font-semibold text-[var(--foreground)]">
                 {dashData.patients}
               </p>
-              <p className="text-gray-400">Patients</p>
+              <p className="text-[var(--foreground)]">Patients</p>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
           <div className="border border-t-0 border-[var(--border)]">
             {dashData.latestAppointments.map((item, index) => (
               <div
-                className="flex items-center px-6 py-3 gap-3 hover:bg-gray-50"
+                className="flex items-center px-6 py-3 gap-3 hover:bg-[var(--muted-bg)]"
                 key={index}
               >
                 <img
@@ -71,10 +71,10 @@ const Dashboard = () => {
                   alt=""
                 />
                 <div className="flex-1 text-sm">
-                  <p className="text-gray-800 font-medium">
+                  <p className="text-[var(--foreground)] font-medium">
                     {item.docData.name}
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-[var(--foreground)]">
                     {formatDateString(item.slotDate)}
                   </p>
                 </div>

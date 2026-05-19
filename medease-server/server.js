@@ -1,6 +1,6 @@
-import app, { connectDB, connectCloudinary } from '@/app.js';
-import env from '@/config/env.js';
-import logger from '@/config/logger.js';
+import app, { connectDB, connectCloudinary } from './src/app.js';
+import env from './src/config/env.js';
+import logger from './src/config/logger.js';
 
 const start = async () => {
   await connectDB();

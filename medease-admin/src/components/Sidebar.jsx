@@ -31,7 +31,7 @@ const Sidebar = () => {
   return (
     <div className="min-h-screen bg-[var(--card-bg)] border-r border-[var(--border)]">
       {(aToken || dToken) && (
-        <ul className="text-[#515151] mt-5">
+        <ul className="text-[var(--foreground)] mt-5">
           {(aToken ? adminNavLinks : doctorNavLinks).map(
             ({ to, icon, label }) => (
               <NavLink

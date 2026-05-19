@@ -1,32 +1,50 @@
-import logger, { sanitizeBody } from '@/config/logger.js';
+import pinoHttp from 'pino-http';
+import pinoLogger from '@/config/logger.js';
+import { sanitizeBody } from '@/config/logger.js';
 
-const requestLoggerMiddleware = (req, res, next) => {
+const requestLoggerMiddleware = pinoHttp({
+  logger: pinoLogger,
+  genReqId: (req) => req.traceId,
+  autoLogging: false,
+  customLogLevel: (req, res, err) => {
+    if (res.statusCode >= 500) return 'error';
+    if (res.statusCode >= 400) return 'warn';
+    return 'info';
+  },
+  serializers: {
+    req: (req) => ({
+      method: req.method,
+      url: req.url,
+      traceId: req.id,
+    }),
+    res: (res) => ({
+      statusCode: res.statusCode,
+    }),
+  },
+});
+
+const bodyLoggerMiddleware = (req, res, next) => {
   const start = Date.now();
 
   res.on('finish', () => {
     const responseTime = Date.now() - start;
-    const logData = {
-      traceId: req.traceId,
-      method: req.method,
-      route: req.originalUrl,
-      statusCode: res.statusCode,
-      responseTime,
-    };
+    const logData = { responseTime };
 
-    if (req.body && Object.keys(req.body).length > 0) {
+    if (['POST', 'PUT', 'PATCH'].includes(req.method) && req.body && Object.keys(req.body).length > 0) {
       logData.body = sanitizeBody(req.body);
     }
 
     if (res.statusCode >= 500) {
-      logger.error('Server error', logData);
+      req.log.error(logData, 'Server error');
     } else if (res.statusCode >= 400) {
-      logger.warn('Client error', logData);
+      req.log.warn(logData, 'Client error');
     } else {
-      logger.info('Request completed', logData);
+      req.log.info(logData, 'Request completed');
     }
   });
 
   next();
 };
 
-export default requestLoggerMiddleware;
+export { requestLoggerMiddleware, bodyLoggerMiddleware };
+export default bodyLoggerMiddleware;

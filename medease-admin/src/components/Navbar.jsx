@@ -27,10 +27,10 @@ const Navbar = () => {
       <div className="flex items-center gap-2 text-xs">
         <img
           className="w-36 sm:w-40 cursor-pointer"
-          src={assets.admin_logo}
+          src={theme === "dark" ? assets.logo_dark : assets.logo}
           alt="MedEase Admin"
         />
-        <p className="border px-2.5 py-0.5 rounded-full border-gray-500 text-gray-500">
+        <p className="border px-2.5 py-0.5 rounded-full border-[var(--border)] text-[var(--foreground)]">
           {aToken ? "Admin" : "Doctor"}
         </p>
       </div>
@@ -43,7 +43,7 @@ const Navbar = () => {
           aria-label="Toggle theme"
         >
           {theme === "light" ? (
-            <svg className="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5 text-[var(--foreground)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
             </svg>
           ) : (

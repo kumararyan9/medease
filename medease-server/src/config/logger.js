@@ -1,9 +1,9 @@
-import winston from 'winston';
+import pino from 'pino';
 import env from './env.js';
 
-const sensitiveFields = ['password', 'token', 'atoken', 'dtoken', 'authorization', 'secret'];
+const sensitiveFields = ['password', 'token', 'atoken', 'dtoken', 'authorization', 'secret', 'creditCard'];
 
-function sanitizeBody(body) {
+export function sanitizeBody(body) {
   if (!body || typeof body !== 'object') return body;
   const sanitized = { ...body };
   for (const key of Object.keys(sanitized)) {
@@ -16,40 +16,33 @@ function sanitizeBody(body) {
   return sanitized;
 }
 
-const logger = winston.createLogger({
+const transport = env.isProduction
+  ? undefined
+  : {
+      target: 'pino-pretty',
+      options: {
+        colorize: true,
+        translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
+        ignore: 'pid,hostname',
+        singleLine: true,
+      },
+    };
+
+const logger = pino({
   level: env.isProduction ? 'info' : 'debug',
-  format: winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    winston.format.errors({ stack: true }),
-    env.isProduction
-      ? winston.format.json()
-      : winston.format.printf(
-          ({
-            timestamp,
-            level,
-            message,
-            traceId,
-            method,
-            route,
-            statusCode,
-            responseTime,
-            body: _body,
-            ...meta
-          }) => {
-            const parts = [`[${timestamp}] ${level.toUpperCase()}`];
-            if (traceId) parts.push(`traceId=${traceId}`);
-            if (method) parts.push(`${method}`);
-            if (route) parts.push(route);
-            if (statusCode) parts.push(`→ ${statusCode}`);
-            if (responseTime) parts.push(`${responseTime}ms`);
-            if (message) parts.push(`- ${message}`);
-            const extras = Object.keys(meta).length ? JSON.stringify(meta) : '';
-            return parts.join(' ') + (extras ? ` ${extras}` : '');
-          }
-        )
-  ),
-  transports: [new winston.transports.Console()],
+  transport,
+  redact: {
+    paths: [
+      'req.headers.authorization',
+      'req.headers.cookie',
+      'body.password',
+      'body.token',
+      'body.atoken',
+      'body.dtoken',
+      'body.creditCard',
+    ],
+    censor: '[REDACTED]',
+  },
 });
 
-export { sanitizeBody };
 export default logger;
