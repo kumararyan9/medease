@@ -1,8 +1,62 @@
-import { useState } from "react";
-import { createContext } from "react";
+import { useState, createContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 export const AdminContext = createContext();
+
+function fmtSlotDate(d) {
+  const date = new Date(d);
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  return `${dd}_${mm}_${yyyy}`;
+}
+
+function fmtSlotTime(d) {
+  const date = new Date(d);
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}
+
+function transformAppointment(apt) {
+  return {
+    _id: apt._id,
+    userData: {
+      image: apt.patientId?.image || "",
+      name: apt.patientId?.name || "",
+      dob: apt.patientId?.dob || "",
+    },
+    docData: {
+      image: apt.doctorId?.image || "",
+      name: apt.doctorId?.name || "",
+      fees: apt.paymentAmount || 0,
+    },
+    slotDate: fmtSlotDate(apt.slotStart),
+    slotTime: fmtSlotTime(apt.slotStart),
+    amount: apt.paymentAmount || 0,
+    payment: apt.paymentStatus === "PAID",
+    cancelled: apt.status === "CANCELLED",
+    isCompleted: apt.status === "COMPLETED",
+  };
+}
+
+function transformDoctor(doc) {
+  return {
+    _id: doc._id,
+    name: doc.name,
+    image: doc.image || "",
+    phone: doc.phone || "",
+    speciality: doc.speciality?.name || doc.speciality || "",
+    degree: doc.degree || "",
+    experienceYears: doc.experienceYears || 0,
+    about: doc.about || "",
+    fees: doc.consultationFee || 0,
+    consultationFee: doc.consultationFee || 0,
+    address: doc.address || { line1: "", line2: "" },
+    available: doc.available !== undefined ? doc.available : true,
+    languages: doc.languages || [],
+    ratingAverage: doc.ratingAverage || 0,
+  };
+}
 
 export const AdminContextProvider = ({ children }) => {
   const [aToken, setAToken] = useState(localStorage.getItem("aToken") || "");
@@ -15,15 +69,10 @@ export const AdminContextProvider = ({ children }) => {
   const getAllDoctors = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/admin/all-doctors", {
-        headers: {
-          aToken,
-        },
+        headers: { aToken },
       });
-      if (data.success) {
-        setDoctors(data.doctors);
-        // console.log(data.doctors);
-
-        toast.success(data.message);
+      if (data.success && data.doctors) {
+        setDoctors(data.doctors.map(transformDoctor));
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch doctors");
@@ -42,9 +91,7 @@ export const AdminContextProvider = ({ children }) => {
         getAllDoctors();
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to change availability"
-      );
+      toast.error(error.response?.data?.message || "Failed to change availability");
     }
   };
 
@@ -53,10 +100,8 @@ export const AdminContextProvider = ({ children }) => {
       const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
         headers: { aToken },
       });
-
-      if (data.success) {
-        setAppointments(data.appointments);
-        // console.log(data.appointments);
+      if (data.success && data.appointments) {
+        setAppointments(data.appointments.map(transformAppointment));
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
@@ -70,16 +115,13 @@ export const AdminContextProvider = ({ children }) => {
         { appointmentId },
         { headers: { aToken } }
       );
-
       if (data.success) {
         toast.success(data.message);
         getAllAppointments();
         getDashData();
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel appointment"
-      );
+      toast.error(error.response?.data?.message || "Failed to cancel appointment");
     }
   };
 
@@ -88,14 +130,17 @@ export const AdminContextProvider = ({ children }) => {
       const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
         headers: { aToken },
       });
-
-      if (data.success) {
-        setDashData(data.dashData);
+      if (data.success && data.dashData) {
+        const dd = data.dashData;
+        setDashData({
+          doctors: dd.doctors || 0,
+          patients: dd.patients || 0,
+          appointments: dd.appointments || 0,
+          latestAppointments: (dd.latestAppointments || []).map(transformAppointment),
+        });
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to load Dashboard data"
-      );
+      toast.error(error.response?.data?.message || "Failed to load Dashboard data");
     }
   };
 
@@ -113,7 +158,6 @@ export const AdminContextProvider = ({ children }) => {
     dashData,
     getDashData,
   };
-  return (
-    <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
-  );
+
+  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
 };

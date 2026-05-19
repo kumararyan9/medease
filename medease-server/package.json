@@ -6,23 +6,43 @@
   "license": "ISC",
   "type": "module",
   "main": "server.js",
+  "imports": {
+    "#@/*": "./src/*"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon server.js"
+    "start": "node --import ./src/register-loader.js server.js",
+    "server": "nodemon --import ./src/register-loader.js server.js",
+    "dev": "nodemon --import ./src/register-loader.js server.js",
+    "migrate:up": "migrate-mongo up",
+    "migrate:down": "migrate-mongo down",
+    "migrate:status": "migrate-mongo status",
+    "migrate:create": "migrate-mongo create",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.js\""
   },
   "dependencies": {
+    "@scalar/express-api-reference": "^0.9.16",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.6.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "migrate-mongo": "^14.0.7",
     "mongoose": "^8.15.1",
     "multer": "^2.0.0",
-    "validator": "^13.15.0"
+    "uuid": "^14.0.0",
+    "validator": "^13.15.0",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.6.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.8.3"
   }
 }

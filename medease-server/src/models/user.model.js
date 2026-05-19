@@ -1,0 +1,37 @@
+import mongoose from 'mongoose';
+
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true, maxlength: 100 },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true, select: false },
+    roleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true },
+    image: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    isActive: { type: Boolean, default: true },
+    lastLoginAt: { type: Date },
+  },
+  {
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform(_doc, ret) {
+        delete ret.password;
+        delete ret.__v;
+        return ret;
+      },
+    },
+  }
+);
+
+userSchema.virtual('role').get(function () {
+  return this._roleName;
+});
+
+userSchema.methods.setRoleName = function (name) {
+  this._roleName = name;
+};
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+export default User;

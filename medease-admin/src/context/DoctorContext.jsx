@@ -1,9 +1,50 @@
 import axios from "axios";
-import { useState } from "react";
-import { createContext } from "react";
+import { useState, createContext } from "react";
 import { toast } from "react-toastify";
 
 export const DoctorContext = createContext();
+
+function fmtSlotDate(d) {
+  const date = new Date(d);
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  return `${dd}_${mm}_${yyyy}`;
+}
+
+function fmtSlotTime(d) {
+  const date = new Date(d);
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}
+
+function transformAppointment(apt) {
+  return {
+    _id: apt._id,
+    userData: {
+      image: apt.patientId?.image || "",
+      name: apt.patientId?.name || "",
+      dob: apt.patientId?.dob || "",
+    },
+    slotDate: fmtSlotDate(apt.slotStart),
+    slotTime: fmtSlotTime(apt.slotStart),
+    amount: apt.paymentAmount || 0,
+    payment: apt.paymentStatus === "PAID",
+    cancelled: apt.status === "CANCELLED",
+    isCompleted: apt.status === "COMPLETED",
+  };
+}
+
+function transformProfile(profile) {
+  return {
+    ...profile,
+    speciality: profile.speciality?.name || profile.speciality || "",
+    fees: profile.consultationFee || 0,
+    experience: profile.experienceYears
+      ? `${profile.experienceYears} ${profile.experienceYears === 1 ? "year" : "years"}`
+      : "",
+    address: profile.address || { line1: "", line2: "" },
+  };
+}
 
 export const DoctorContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -15,18 +56,14 @@ export const DoctorContextProvider = ({ children }) => {
 
   const getAppointments = async () => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/doctor/appointments",
-        { headers: { dToken } }
-      );
-
-      if (data.success) {
-        setAppointments(data.appointments.reverse());
+      const { data } = await axios.get(backendUrl + "/api/doctor/appointments", {
+        headers: { dToken },
+      });
+      if (data.success && data.appointments) {
+        setAppointments(data.appointments.map(transformAppointment));
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to fetch appointments"
-      );
+      toast.error(error.response?.data?.message || "Failed to fetch appointments");
     }
   };
 
@@ -37,16 +74,13 @@ export const DoctorContextProvider = ({ children }) => {
         { appointmentId },
         { headers: { dToken } }
       );
-
       if (data.success) {
         toast.success(data.message);
         getAppointments();
         getDashData();
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to complete appointment"
-      );
+      toast.error(error.response?.data?.message || "Failed to complete appointment");
     }
   };
 
@@ -57,16 +91,13 @@ export const DoctorContextProvider = ({ children }) => {
         { appointmentId },
         { headers: { dToken } }
       );
-
       if (data.success) {
         toast.success(data.message);
         getAppointments();
         getDashData();
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel appointments"
-      );
+      toast.error(error.response?.data?.message || "Failed to cancel appointment");
     }
   };
 
@@ -75,14 +106,17 @@ export const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.get(backendUrl + "/api/doctor/dashboard", {
         headers: { dToken },
       });
-
-      if (data.success) {
-        setDashData(data.dashData);
+      if (data.success && data.dashData) {
+        const dd = data.dashData;
+        setDashData({
+          earning: dd.earnings || 0,
+          appointments: dd.appointments || 0,
+          patients: dd.patients || 0,
+          latestAppointments: (dd.latestAppointments || []).map(transformAppointment),
+        });
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel appointments"
-      );
+      toast.error(error.response?.data?.message || "Failed to load dashboard data");
     }
   };
 
@@ -91,14 +125,11 @@ export const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.get(backendUrl + "/api/doctor/profile", {
         headers: { dToken },
       });
-
-      if (data.success) {
-        setProfileData(data.profileData);
+      if (data.success && data.profileData) {
+        setProfileData(transformProfile(data.profileData));
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel appointments"
-      );
+      toast.error(error.response?.data?.message || "Failed to load profile");
     }
   };
 
@@ -115,7 +146,6 @@ export const DoctorContextProvider = ({ children }) => {
     setProfileData,
     getProfileData,
   };
-  return (
-    <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>
-  );
+
+  return <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>;
 };
