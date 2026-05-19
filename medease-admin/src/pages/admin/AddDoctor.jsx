@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-toastify";
@@ -10,15 +10,25 @@ const AddDoctor = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [experience, setExperience] = useState("");
+  const [experienceYears, setExperienceYears] = useState("");
   const [fees, setFees] = useState("");
-  const [speciality, setSpeciality] = useState("");
+  const [specialityId, setSpecialityId] = useState("");
   const [degree, setDegree] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [about, setAbout] = useState("");
+  const [specialities, setSpecialities] = useState([]);
 
   const { backendUrl, aToken } = useContext(AdminContext);
+
+  useEffect(() => {
+    axios
+      .get(backendUrl + "/api/specialities")
+      .then(({ data }) => {
+        if (data.success) setSpecialities(data.specialities || []);
+      })
+      .catch(() => {});
+  }, []);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -32,15 +42,12 @@ const AddDoctor = () => {
       formData.append("name", name);
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("experience", experience);
-      formData.append("fees", Number(fees));
+      formData.append("experienceYears", Number(experienceYears));
+      formData.append("consultationFee", Number(fees));
       formData.append("about", about);
-      formData.append("speciality", speciality);
+      formData.append("specialityId", specialityId);
       formData.append("degree", degree);
-      formData.append(
-        "address",
-        JSON.stringify({ line1: address1, line2: address2 })
-      );
+      formData.append("address", JSON.stringify({ line1: address1, line2: address2 }));
 
       const { data } = await axios.post(
         backendUrl + "/api/admin/add-doctor",
@@ -53,9 +60,9 @@ const AddDoctor = () => {
         setName("");
         setEmail("");
         setPassword("");
-        setExperience("");
+        setExperienceYears("");
         setFees("");
-        setSpeciality("");
+        setSpecialityId("");
         setDegree("");
         setAddress1("");
         setAddress2("");
@@ -65,10 +72,7 @@ const AddDoctor = () => {
       if (err.response?.data?.message?.includes("E11000 duplicate key error")) {
         toast.error(`A doctor with this email: "${email}" already exists!`);
       } else {
-        toast.error(
-          err.response?.data?.message ||
-            "Something went wrong, please try again."
-        );
+        toast.error(err.response?.data?.message || "Something went wrong, please try again.");
       }
     }
   };
@@ -136,25 +140,16 @@ const AddDoctor = () => {
               />
             </div>
             <div className="flex-1 flex flex-col gap-1">
-              <p>Experience</p>
-              <select
+              <p>Experience (years)</p>
+              <input
                 className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
-                onChange={(e) => setExperience(e.target.value)}
-                value={experience}
+                onChange={(e) => setExperienceYears(e.target.value)}
+                value={experienceYears}
+                type="number"
+                min="0"
+                placeholder="Years of experience"
                 required
-              >
-                <option value="">Select years</option>
-                <option value="1 year">1 year</option>
-                <option value="2 years">2 years</option>
-                <option value="3 years">3 years</option>
-                <option value="4 years">4 years</option>
-                <option value="5 years">5 years</option>
-                <option value="6 years">6 years</option>
-                <option value="7 years">7 years</option>
-                <option value="8 years">8 years</option>
-                <option value="9 years">9 years</option>
-                <option value="10 years">10 years</option>
-              </select>
+              />
             </div>
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor Fee</p>
@@ -173,17 +168,16 @@ const AddDoctor = () => {
               <p>Speciality</p>
               <select
                 className="border rounded px-3 py-2 border-[var(--border)] bg-[var(--background)]"
-                onChange={(e) => setSpeciality(e.target.value)}
-                value={speciality}
+                onChange={(e) => setSpecialityId(e.target.value)}
+                value={specialityId}
                 required
               >
                 <option value="">Select speciality</option>
-                <option value="General physician">General physician</option>
-                <option value="Gynecologist">Gynecologist</option>
-                <option value="Dermatologist">Dermatologist</option>
-                <option value="Pediatricians">Pediatricians</option>
-                <option value="Neurologist">Neurologist</option>
-                <option value="Gastroenterologist">Gastroenterologist</option>
+                {specialities.map((s) => (
+                  <option key={s._id} value={s._id}>
+                    {s.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex-1 flex flex-col gap-1">

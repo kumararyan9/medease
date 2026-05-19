@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "checkJs": false,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*", "server.js", "migrate-mongo-config.js"],
+  "exclude": ["node_modules", "dist"]
+}

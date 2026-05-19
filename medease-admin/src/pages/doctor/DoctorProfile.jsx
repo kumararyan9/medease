@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 const DoctorProfile = () => {
-  const { dToken, profileData, setProfileData, getProfileData } =
-    useContext(DoctorContext);
+  const { dToken, profileData, setProfileData, getProfileData } = useContext(DoctorContext);
   const { currencySymbol, backendUrl } = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -16,7 +15,7 @@ const DoctorProfile = () => {
     try {
       const updateData = {
         address: profileData.address,
-        fees: profileData.fees,
+        consultationFee: Number(profileData.fees),
         available: profileData.available,
       };
 
@@ -32,9 +31,7 @@ const DoctorProfile = () => {
         getProfileData();
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Failed to cancel appointments"
-      );
+      toast.error(error.response?.data?.message || "Failed to update profile");
     }
   };
 
@@ -144,13 +141,13 @@ const DoctorProfile = () => {
 
               <div className="flex gap-1 pt-2">
                 <input
-                onChange={() =>
-                  isEdit &&
-                  setProfileData((prev) => ({
-                    ...prev,
-                    available: !prev.available,
-                  }))
-                }
+                  onChange={() =>
+                    isEdit &&
+                    setProfileData((prev) => ({
+                      ...prev,
+                      available: !prev.available,
+                    }))
+                  }
                   checked={profileData.available}
                   className="cursor-pointer"
                   type="checkbox"
