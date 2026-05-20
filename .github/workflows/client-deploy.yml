@@ -8,8 +8,8 @@ name: Client Deploy → Vercel
 on:
   push:
     branches: [main]
-    paths:
-      - 'medease-client/**'
+    # paths:
+    #   - 'medease-client/**'
 
 concurrency:
   group: client-deploy-${{ github.ref }}
@@ -18,8 +18,8 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  NODE_ENV: production
+# env:
+#   NODE_ENV: production
 
 defaults:
   run:
