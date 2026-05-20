@@ -52,7 +52,8 @@ jobs:
 
       - name: ESLint validation
         # --max-warnings 0 ensures ANY warning fails the build
-        run: npx eslint . --ext .ts --max-warnings 0 --ignore-path .eslintignore
+        # Files and ignores are defined in eslint.config.mjs
+        run: npx eslint . --max-warnings 0
 
       - name: TypeScript type-check
         run: npx tsc --noEmit
