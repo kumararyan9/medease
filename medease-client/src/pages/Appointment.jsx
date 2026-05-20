@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets_frontend/assets";
@@ -20,12 +20,12 @@ const Appointment = () => {
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
 
-  const fetchDoc = () => {
+  const fetchDoc = useCallback(() => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
-  };
+  }, [doctors, docId]);
 
-  const getAvailableSlots = async () => {
+  const getAvailableSlots = useCallback(async () => {
     setDocSlots([]);
     let today = new Date();
 
@@ -87,7 +87,7 @@ const Appointment = () => {
         setDocSlots((prev) => [...prev, timeSlots]);
       }
     }
-  };
+  }, [docInfo]);
 
   const bookAppointment = async () => {
     if (!token) {
@@ -122,11 +122,11 @@ const Appointment = () => {
 
   useEffect(() => {
     fetchDoc();
-  }, [doctors, docId]);
+  }, [fetchDoc]);
 
   useEffect(() => {
     getAvailableSlots();
-  }, [docInfo]);
+  }, [getAvailableSlots]);
 
   useEffect(() => {
     if (docInfo && !docInfo.available) {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,7 +23,7 @@ const Appointments = () => {
     });
   };
 
-  const getUserAppointments = async () => {
+  const getUserAppointments = useCallback(async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/user/appointments", {
         headers: { token },
@@ -36,7 +36,7 @@ const Appointments = () => {
         error.response?.data?.message || "Failed to fetch appointments"
       );
     }
-  };
+  }, [backendUrl, token]);
 
   const cancelAppointment = async (appointmentId) => {
     try {
@@ -91,7 +91,7 @@ const Appointments = () => {
     if (token) {
       getUserAppointments();
     }
-  }, [token]);
+  }, [token, getUserAppointments]);
 
   return (
     <motion.div

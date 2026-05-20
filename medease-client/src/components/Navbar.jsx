@@ -3,7 +3,7 @@ import { assets } from "../assets/assets_frontend/assets";
 import { useState } from "react";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [

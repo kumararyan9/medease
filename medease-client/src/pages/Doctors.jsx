@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import DoctorCard from "../components/DoctorCard";
@@ -22,7 +22,7 @@ const Doctors = () => {
     { name: "Gastroenterologist", slug: "gastroenterologist" },
   ];
 
-  const applyFilter = () => {
+  const applyFilter = useCallback(() => {
     if (slug) {
       setFilterDoc(
         doctors.filter(
@@ -34,11 +34,11 @@ const Doctors = () => {
     } else {
       setFilterDoc(doctors);
     }
-  };
+  }, [doctors, slug]);
 
   useEffect(() => {
     applyFilter();
-  }, [doctors, slug]);
+  }, [applyFilter]);
 
   useEffect(() => {
     setTimeout(() => {

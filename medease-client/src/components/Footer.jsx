@@ -1,5 +1,5 @@
 import { assets } from "../assets/assets_frontend/assets";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../context/useTheme";
 
 const Footer = () => {
   const { theme } = useTheme();
