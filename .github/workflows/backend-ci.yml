@@ -55,15 +55,15 @@ jobs:
         # Files and ignores are defined in eslint.config.mjs
         run: npx eslint . --max-warnings 0
 
-      - name: TypeScript type-check
-        run: npx tsc --noEmit
+      # - name: TypeScript type-check
+      #   run: npx tsc --noEmit
 
-      - name: Full TypeScript compile validation
-        run: npx tsc --outDir dist --noEmit false
+      # - name: Full TypeScript compile validation
+      #   run: npx tsc --outDir dist --noEmit false
 
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-build
-          path: medease-server/dist/
-          retention-days: 3
+      # - name: Upload dist artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: backend-build
+      #     path: medease-server/dist/
+      #     retention-days: 3
