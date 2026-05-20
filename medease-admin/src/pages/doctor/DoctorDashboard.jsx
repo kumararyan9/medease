@@ -3,6 +3,7 @@ import { DoctorContext } from "../../context/DoctorContext";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
 import { motion } from "framer-motion";
+import { ListIcon, TickIcon, CancelIcon } from "../../components/Icons";
 
 const DoctorDashboard = () => {
   const {
@@ -18,6 +19,7 @@ const DoctorDashboard = () => {
     if (dToken) {
       getDashData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dToken]);
 
   return (
@@ -62,7 +64,7 @@ const DoctorDashboard = () => {
 
         <div className="bg-[var(--card-bg)]">
           <div className="flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border border-[var(--border)]">
-            <img src={assets.list_icon} alt="" />
+            <ListIcon className="w-[22px] h-[22px] text-[var(--foreground)]" />
             <p className="font-semibold">latest Appointments</p>
           </div>
           <div className="border border-t-0 border-[var(--border)]">
@@ -92,17 +94,13 @@ const DoctorDashboard = () => {
                   </p>
                 ) : (
                   <div className="flex">
-                    <img
+                    <CancelIcon
                       onClick={() => cancelAppointment(item._id)}
-                      className="w-10 cursor-pointer"
-                      src={assets.cancel_icon}
-                      alt=""
+                      className="w-10 cursor-pointer text-red-400"
                     />
-                    <img
+                    <TickIcon
                       onClick={() => completeAppointment(item._id)}
-                      className="w-10 cursor-pointer"
-                      src={assets.tick_icon}
-                      alt=""
+                      className="w-10 cursor-pointer text-green-500"
                     />
                   </div>
                 )}

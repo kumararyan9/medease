@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
-import { assets } from "../../assets/assets";
 import { motion } from "framer-motion";
+import { TickIcon, CancelIcon } from "../../components/Icons";
 
 const DoctorAppointments = () => {
   const { dToken, appointments, getAppointments, cancelAppointment, completeAppointment } = useContext(DoctorContext);
@@ -14,6 +14,7 @@ const DoctorAppointments = () => {
     if (dToken) {
       getAppointments();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dToken]);
 
   return (
@@ -72,17 +73,13 @@ const DoctorAppointments = () => {
               <p className="text-green-500 text-xs font-medium">Completed</p>
             ) : (
               <div className="flex">
-                <img
+                <CancelIcon
                   onClick={() => cancelAppointment(item._id)}
-                  className="w-10 cursor-pointer"
-                  src={assets.cancel_icon}
-                  alt=""
+                  className="w-10 cursor-pointer text-red-400"
                 />
-                <img
+                <TickIcon
                   onClick={() => completeAppointment(item._id)}
-                  className="w-10 cursor-pointer"
-                  src={assets.tick_icon}
-                  alt=""
+                  className="w-10 cursor-pointer text-green-500"
                 />
               </div>
             )}

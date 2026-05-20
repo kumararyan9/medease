@@ -6,7 +6,7 @@ const requestLoggerMiddleware = pinoHttp({
   logger: pinoLogger,
   genReqId: (req) => req.traceId,
   autoLogging: false,
-  customLogLevel: (req, res, err) => {
+  customLogLevel: (req, res, _err) => {
     if (res.statusCode >= 500) return 'error';
     if (res.statusCode >= 400) return 'warn';
     return 'info';

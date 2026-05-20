@@ -1,0 +1,69 @@
+# -------------------------------------------------------------------
+# Backend CI — triggered on push to dev and PRs targeting main
+# Only runs when medease-server/ files change
+# -------------------------------------------------------------------
+name: Backend CI
+
+on:
+  push:
+    branches: [dev]
+    #paths:
+    #  - 'medease-server/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'medease-server/**'
+
+# Cancel any in-progress workflow for the same branch
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DATABASE_URL: 'mongodb://localhost:27017/medease_ci'
+  JWT_SECRET: 'ci-only-secret-not-real'
+  NODE_ENV: 'test'
+
+defaults:
+  run:
+    working-directory: medease-server
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: medease-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm install --include=dev
+
+      - name: ESLint validation
+        # --max-warnings 0 ensures ANY warning fails the build
+        # Files and ignores are defined in eslint.config.mjs
+        run: npx eslint . --max-warnings 0
+
+      - name: TypeScript type-check
+        run: npx tsc --noEmit
+
+      - name: Full TypeScript compile validation
+        run: npx tsc --outDir dist --noEmit false
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-build
+          path: medease-server/dist/
+          retention-days: 3

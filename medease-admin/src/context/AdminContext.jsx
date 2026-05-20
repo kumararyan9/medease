@@ -2,6 +2,7 @@ import { useState, createContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
 
 function fmtSlotDate(d) {

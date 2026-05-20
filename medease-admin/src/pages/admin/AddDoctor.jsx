@@ -28,6 +28,7 @@ const AddDoctor = () => {
         if (data.success) setSpecialities(data.specialities || []);
       })
       .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmitHandler = async (e) => {
