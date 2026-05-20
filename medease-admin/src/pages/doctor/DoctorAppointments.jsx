@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
-import { assets } from "../../assets/assets";
 import { motion } from "framer-motion";
 import { TickIcon, CancelIcon } from "../../components/Icons";
 
@@ -15,6 +14,7 @@ const DoctorAppointments = () => {
     if (dToken) {
       getAppointments();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dToken]);
 
   return (

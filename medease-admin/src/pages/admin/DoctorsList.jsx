@@ -8,6 +8,7 @@ const DoctorsList = () => {
 
   useEffect(() => {
     getAllDoctors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aToken]);
 
   return (

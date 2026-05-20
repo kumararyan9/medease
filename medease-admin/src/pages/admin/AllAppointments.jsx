@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
-import { assets } from "../../assets/assets";
 import { motion } from "framer-motion";
 import { CancelIcon } from "../../components/Icons";
 
@@ -15,6 +14,7 @@ const AllAppointments = () => {
     if (aToken) {
       getAllAppointments();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aToken]);
   return (
     <motion.div

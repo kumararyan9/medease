@@ -1,5 +1,3 @@
-import { assets } from "../assets/assets";
-
 export const HomeIcon = ({ className, onClick }) => (
   <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} onClick={onClick}>
     <path d="M8.35156 15.6992C9.24446 16.361 10.3304 16.7492 11.5016 16.7492C12.6727 16.7492 13.7586 16.361 14.6516 15.6992" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>

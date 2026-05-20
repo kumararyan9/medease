@@ -19,6 +19,7 @@ const DoctorDashboard = () => {
     if (dToken) {
       getDashData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dToken]);
 
   return (
