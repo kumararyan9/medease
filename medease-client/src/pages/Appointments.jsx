@@ -114,7 +114,7 @@ const Appointments = () => {
             <div>
               <img
                 className="w-32 bg-[var(--muted-bg)] rounded"
-                src={doc.docData.image}
+                src={doc.docData.image || null}
                 alt=""
               />
             </div>
@@ -122,7 +122,7 @@ const Appointments = () => {
               <p className="text-neutral-800 font-semibold">
                 {doc.docData.name}
               </p>
-              <p>{doc.docData.speciality}</p>
+              <p>{doc.docData.speciality?.name || doc.docData.speciality}</p>
               <p className="text-zinc-700 font-medium mt-1">Address:</p>
               <p className="text-xs">{doc.docData.address.line1}</p>
               <p className="text-xs">{doc.docData.address.line2}</p>
@@ -190,7 +190,7 @@ const Appointments = () => {
             message={
               modalContext.type === "payment"
                 ? `Do you want to proceed with the consultation fee of ${currencySymbol}${
-                    getSelectedAppointment().docData.fees
+                    getSelectedAppointment().docData.consultationFee || getSelectedAppointment().docData.fees
                   }?`
                 : "Are you sure you want to cancel this appointment?"
             }

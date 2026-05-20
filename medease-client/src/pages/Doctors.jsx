@@ -26,9 +26,10 @@ const Doctors = () => {
     if (slug) {
       setFilterDoc(
         doctors.filter(
-          (doc) =>
-            doc.speciality.toLowerCase().replace(/\s+/g, "-") ===
-            slug.toLowerCase()
+          (doc) => {
+            const spec = (doc.speciality?.name || doc.speciality || "").toLowerCase().replace(/\s+/g, "-");
+            return spec === slug.toLowerCase();
+          }
         )
       );
     } else {
