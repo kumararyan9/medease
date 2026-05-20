@@ -3,6 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import { AppContext } from "../../context/AppContext";
 import { assets } from "../../assets/assets";
 import { motion } from "framer-motion";
+import { CancelIcon } from "../../components/Icons";
 
 const AllAppointments = () => {
   const { aToken, appointments, getAllAppointments, cancelAppointment } =
@@ -79,11 +80,9 @@ const AllAppointments = () => {
             ) : item.isCompleted ? (
               <p className="text-green-500 text-xs font-medium">Completed</p>
             ) : (
-              <img
+              <CancelIcon
                 onClick={() => cancelAppointment(item._id)}
-                className="w-10 cursor-pointer"
-                src={assets.cancel_icon}
-                alt=""
+                className="w-10 cursor-pointer text-red-400"
               />
             )}
           </div>

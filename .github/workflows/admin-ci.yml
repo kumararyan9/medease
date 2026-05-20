@@ -1,0 +1,61 @@
+# -------------------------------------------------------------------
+# Admin Frontend CI — push to dev / PR targeting main
+# Only runs when medease-admin/ files change
+# -------------------------------------------------------------------
+name: Admin Frontend CI
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'medease-admin/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'medease-admin/**'
+
+concurrency:
+  group: admin-frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_ENV: production
+
+defaults:
+  run:
+    working-directory: medease-admin
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: medease-admin/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: ESLint validation
+        run: npx eslint . --max-warnings 0
+
+      - name: Vite build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-build
+          path: medease-admin/dist/
+          retention-days: 3

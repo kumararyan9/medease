@@ -1,12 +1,12 @@
 import express from 'express';
-import corsMiddleware from '@/middleware/cors.js';
-import connectDB from '@/config/db.js';
-import connectCloudinary from '@/config/cloudinary.js';
-import traceIdMiddleware from '@/middleware/traceId.js';
-import { requestLoggerMiddleware, bodyLoggerMiddleware } from '@/middleware/requestLogger.js';
-import errorHandler from '@/middleware/errorHandler.js';
-import routes from '@/routes/index.js';
-import docsRoutes from '@/docs/docs.routes.js';
+import corsMiddleware from './middleware/cors.js';
+import connectDB from './config/db.js';
+import connectCloudinary from './config/cloudinary.js';
+import traceIdMiddleware from './middleware/traceId.js';
+import { requestLoggerMiddleware, bodyLoggerMiddleware } from './middleware/requestLogger.js';
+import errorHandler from './middleware/errorHandler.js';
+import routes from './routes/index.js';
+import docsRoutes from './routes/index.js';
 
 const app = express();
 

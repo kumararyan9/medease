@@ -3,26 +3,27 @@ import { AdminContext } from "../context/AdminContext";
 import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { DoctorContext } from "../context/DoctorContext";
+import { HomeIcon, AppointmentIcon, AddIcon, PeopleIcon } from "./Icons";
 
 const adminNavLinks = [
-  { to: "/admin/dashboard", icon: assets.home_icon, label: "Dashboard" },
+  { to: "/admin/dashboard", icon: "home", label: "Dashboard" },
   {
     to: "/admin/all-appointments",
-    icon: assets.appointment_icon,
+    icon: "appointment",
     label: "All Appointments",
   },
-  { to: "/admin/add-doctor", icon: assets.add_icon, label: "Add Doctor" },
-  { to: "/admin/doctors-list", icon: assets.home_icon, label: "Doctor List" },
+  { to: "/admin/add-doctor", icon: "add", label: "Add Doctor" },
+  { to: "/admin/doctors-list", icon: "home", label: "Doctor List" },
 ];
 
 const doctorNavLinks = [
-  { to: "/doctor/dashboard", icon: assets.home_icon, label: "Dashboard" },
+  { to: "/doctor/dashboard", icon: "home", label: "Dashboard" },
   {
     to: "/doctor/appointments",
-    icon: assets.appointment_icon,
+    icon: "appointment",
     label: "My Appointments",
   },
-  { to: "/doctor/profile", icon: assets.people_icon, label: "Profile" },
+  { to: "/doctor/profile", icon: "people", label: "Profile" },
 ];
 
 const Sidebar = () => {
@@ -43,7 +44,10 @@ const Sidebar = () => {
                 key={to}
                 to={to}
               >
-                <img src={icon} alt={label} />
+                {icon === "home" && <HomeIcon className="w-[23px] h-[23px] text-[var(--foreground)]" />}
+                {icon === "appointment" && <AppointmentIcon className="w-[24px] h-[23px] text-[var(--foreground)]" />}
+                {icon === "add" && <AddIcon className="w-[24px] h-[24px] text-[var(--foreground)]" />}
+                {icon === "people" && <PeopleIcon className="w-[24px] h-[24px] text-[var(--foreground)]" />}
                 <p className="hidden md:block">{label}</p>
               </NavLink>
             )

@@ -1,0 +1,67 @@
+# -------------------------------------------------------------------
+# Backend Deploy → Render — triggered on push to main
+# Only runs when medease-server/ files change
+# -------------------------------------------------------------------
+name: Backend Deploy → Render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'medease-server/**'
+
+# Cancel any in-progress deploy for main
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  NODE_ENV: production
+
+defaults:
+  run:
+    working-directory: medease-server
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: medease-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx eslint . --ext .ts --max-warnings 0
+
+      - name: Run TypeScript type-check
+        run: npx tsc --noEmit
+
+      - name: Build backend
+        run: npx tsc
+
+      - name: Trigger Render deploy
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Deployment summary
+        run: |
+          echo "Backend deployed successfully."
+          echo "Checks passed:"
+          echo "  - lint"
+          echo "  - type-check"
+          echo "  - build"
