@@ -7,8 +7,8 @@ name: Admin Frontend CI
 on:
   push:
     branches: [dev]
-    paths:
-      - 'medease-admin/**'
+    #paths:
+    #  - 'medease-admin/**'
   pull_request:
     branches: [main]
     paths:
@@ -45,7 +45,7 @@ jobs:
           cache-dependency-path: medease-admin/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --include=dev
 
       - name: ESLint validation
         run: npm run lint
