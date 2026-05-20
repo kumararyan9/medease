@@ -5,8 +5,8 @@
 name: Admin Frontend CI
 
 on:
-  push:
-    branches: [dev]
+  # push:
+  #   branches: [dev]
     #paths:
     #  - 'medease-admin/**'
   pull_request:
