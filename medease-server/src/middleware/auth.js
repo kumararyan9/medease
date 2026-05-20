@@ -1,8 +1,8 @@
-import jwt from 'jsonwebtoken';
-import AppError from '@/utils/AppError.js';
-import asyncHandler from '@/utils/asyncHandler.js';
-import env from '@/config/env.js';
-import User from '@/models/user.model.js';
+const jwt = require('jsonwebtoken');
+const AppError = require('@/utils/AppError');
+const asyncHandler = require('@/utils/asyncHandler');
+const env = require('@/config/env');
+const User = require('@/models/user.model');
 
 const authenticate = asyncHandler(async (req, res, next) => {
   let token;
@@ -82,4 +82,4 @@ const requirePermission = (...perms) => {
   };
 };
 
-export { authenticate, requireRole, requirePermission };
+module.exports = { authenticate, requireRole, requirePermission };

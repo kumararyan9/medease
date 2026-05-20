@@ -1,6 +1,6 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as patientService from './patient.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const patientService = require('./patient.service');
 
 const getProfile = asyncHandler(async (req, res) => {
   const userData = await patientService.getProfile(req.user.id);
@@ -17,4 +17,4 @@ const getAppointments = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: { appointments } });
 });
 
-export { getProfile, updateProfile, getAppointments };
+module.exports = { getProfile, updateProfile, getAppointments };

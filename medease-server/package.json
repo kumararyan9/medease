@@ -4,16 +4,15 @@
   "version": "1.0.0",
   "description": "MedEase — a full-stack doctor appointment booking system built with Node.js, Express.js, MongoDB, and React.js.",
   "license": "ISC",
-  "type": "module",
   "main": "server.js",
-  "imports": {
-    "#@/*": "./src/*"
+  "_moduleAliases": {
+    "@": "./src"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --import ./src/register-loader.js server.js",
-    "server": "nodemon --import ./src/register-loader.js server.js",
-    "dev": "nodemon --import ./src/register-loader.js server.js",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "nodemon server.js",
     "migrate:up": "migrate-mongo up",
     "migrate:down": "migrate-mongo down",
     "migrate:status": "migrate-mongo status",
@@ -31,12 +30,13 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "migrate-mongo": "^14.0.7",
+    "module-alias": "^2.3.4",
     "mongoose": "^8.15.1",
     "multer": "^2.0.0",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
     "pino-pretty": "^13.1.3",
-    "tsconfig-paths": "^4.2.0",
+
     "uuid": "^14.0.0",
     "validator": "^13.15.0",
     "winston": "^3.19.0"
@@ -48,7 +48,6 @@
     "globals": "^17.6.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.8.3",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.4"
+
   }
 }

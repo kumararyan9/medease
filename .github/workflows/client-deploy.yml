@@ -8,8 +8,8 @@ name: Client Deploy → Vercel
 on:
   push:
     branches: [main]
-    # paths:
-    #   - 'medease-client/**'
+    paths:
+      - 'medease-client/**'
 
 concurrency:
   group: client-deploy-${{ github.ref }}

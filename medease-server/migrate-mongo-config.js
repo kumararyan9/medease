@@ -1,4 +1,4 @@
-import 'dotenv/config';
+require('dotenv/config');
 
 const config = {
   mongodb: {
@@ -14,4 +14,4 @@ const config = {
   migrationFileExtension: '.js',
 };
 
-export default config;
+module.exports = config;

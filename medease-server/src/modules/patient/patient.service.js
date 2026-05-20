@@ -1,8 +1,8 @@
-import userRepo from '@/repositories/user.repository.js';
-import patientProfileRepo from '@/repositories/patientProfile.repository.js';
-import appointmentRepo from '@/repositories/appointment.repository.js';
-import AppError from '@/utils/AppError.js';
-import { validateProfileUpdate } from './patient.validator.js';
+const userRepo = require('@/repositories/user.repository');
+const patientProfileRepo = require('@/repositories/patientProfile.repository');
+const appointmentRepo = require('@/repositories/appointment.repository');
+const AppError = require('@/utils/AppError');
+const { validateProfileUpdate } = require('./patient.validator');
 
 async function getProfile(userId) {
   const user = await userRepo.findById(userId);
@@ -59,4 +59,4 @@ async function getAppointments(userId) {
   return appointmentRepo.findPatientAppointments(userId);
 }
 
-export { getProfile, updateProfile, getAppointments };
+module.exports = { getProfile, updateProfile, getAppointments };

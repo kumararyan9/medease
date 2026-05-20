@@ -8,8 +8,8 @@ name: Admin Deploy → Vercel
 on:
   push:
     branches: [main]
-    # paths:
-    #   - 'medease-admin/**'
+    paths:
+      - 'medease-admin/**'
 
 concurrency:
   group: admin-deploy-${{ github.ref }}

@@ -1,6 +1,6 @@
-import pinoHttp from 'pino-http';
-import pinoLogger from '@/config/logger.js';
-import { sanitizeBody } from '@/config/logger.js';
+const pinoHttp = require('pino-http');
+const pinoLogger = require('@/config/logger');
+const { sanitizeBody } = require('@/config/logger');
 
 const requestLoggerMiddleware = pinoHttp({
   logger: pinoLogger,
@@ -46,5 +46,6 @@ const bodyLoggerMiddleware = (req, res, next) => {
   next();
 };
 
-export { requestLoggerMiddleware, bodyLoggerMiddleware };
-export default bodyLoggerMiddleware;
+module.exports = bodyLoggerMiddleware;
+module.exports.requestLoggerMiddleware = requestLoggerMiddleware;
+module.exports.bodyLoggerMiddleware = bodyLoggerMiddleware;

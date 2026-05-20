@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*"]
     },
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "checkJs": false,
     "resolveJsonModule": true
   },

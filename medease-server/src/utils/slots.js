@@ -1,4 +1,4 @@
-import env from '@/config/env.js';
+const env = require('@/config/env');
 
 function generateTimeSlots(dateStr, bookedSlotStarts = []) {
   const { workingHoursStart, workingHoursEnd, slotInterval } = env.app;
@@ -26,4 +26,4 @@ function generateTimeSlots(dateStr, bookedSlotStarts = []) {
   };
 }
 
-export default generateTimeSlots;
+module.exports = generateTimeSlots;

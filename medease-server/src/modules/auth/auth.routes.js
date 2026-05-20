@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { authenticate } from '@/middleware/auth.js';
-import upload from '@/middleware/multer.js';
-import * as authController from './auth.controller.js';
+const { Router } = require('express');
+const { authenticate } = require('@/middleware/auth');
+const upload = require('@/middleware/multer');
+const authController = require('./auth.controller');
 
 const router = Router();
 
@@ -10,4 +10,4 @@ router.post('/login', authController.login);
 router.get('/get-profile', authenticate, authController.getProfile);
 router.post('/update-profile', authenticate, upload.single('image'), authController.updateProfile);
 
-export default router;
+module.exports = router;

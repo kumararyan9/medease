@@ -1,4 +1,4 @@
-import env from '@/config/env.js';
+const env = require('@/config/env');
 
 const ALLOWED_METHODS = ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'];
 const ALLOWED_HEADERS = [
@@ -50,4 +50,4 @@ const corsMiddleware = (req, res, next) => {
   next();
 };
 
-export default corsMiddleware;
+module.exports = corsMiddleware;

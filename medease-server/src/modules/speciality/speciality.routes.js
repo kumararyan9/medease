@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '@/middleware/auth.js';
-import * as specialityController from './speciality.controller.js';
+const { Router } = require('express');
+const { authenticate, requireRole } = require('@/middleware/auth');
+const specialityController = require('./speciality.controller');
 
 const router = Router();
 
@@ -11,4 +11,4 @@ router.post('/', authenticate, requireRole('ADMIN'), specialityController.create
 router.put('/:id', authenticate, requireRole('ADMIN'), specialityController.update);
 router.delete('/:id', authenticate, requireRole('ADMIN'), specialityController.remove);
 
-export default router;
+module.exports = router;

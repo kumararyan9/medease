@@ -7,8 +7,8 @@ name: Admin Frontend CI
 on:
   # push:
   #   branches: [dev]
-    #paths:
-    #  - 'medease-admin/**'
+    paths:
+     - 'medease-admin/**'
   pull_request:
     branches: [main]
     paths:

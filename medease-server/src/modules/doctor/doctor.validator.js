@@ -1,4 +1,4 @@
-import AppError from '@/utils/AppError.js';
+const AppError = require('@/utils/AppError');
 
 function validateProfileUpdate(data) {
   if (
@@ -22,4 +22,4 @@ function validateAppointmentAction(data) {
   }
 }
 
-export { validateProfileUpdate, validateAppointmentAction };
+module.exports = { validateProfileUpdate, validateAppointmentAction };

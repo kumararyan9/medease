@@ -1,5 +1,5 @@
-import { randomUUID } from 'node:crypto';
-import { loggerContext } from '@/utils/logger.js';
+const { randomUUID } = require('node:crypto');
+const { loggerContext } = require('@/utils/logger');
 
 const traceIdMiddleware = (req, res, next) => {
   const traceId = req.headers['x-trace-id'] || randomUUID();
@@ -9,4 +9,4 @@ const traceIdMiddleware = (req, res, next) => {
   loggerContext.run({ traceId }, () => next());
 };
 
-export default traceIdMiddleware;
+module.exports = traceIdMiddleware;

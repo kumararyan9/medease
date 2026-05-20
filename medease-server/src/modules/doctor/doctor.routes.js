@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '@/middleware/auth.js';
-import * as doctorController from './doctor.controller.js';
+const { Router } = require('express');
+const { authenticate, requireRole } = require('@/middleware/auth');
+const doctorController = require('./doctor.controller');
 
 const router = Router();
 
@@ -23,4 +23,4 @@ router.get('/dashboard', authenticate, requireRole('DOCTOR'), doctorController.g
 router.get('/profile', authenticate, requireRole('DOCTOR'), doctorController.getProfile);
 router.post('/update-profile', authenticate, requireRole('DOCTOR'), doctorController.updateProfile);
 
-export default router;
+module.exports = router;

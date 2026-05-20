@@ -7,8 +7,8 @@ name: Client Frontend CI
 on:
   # push:
   #   branches: [dev]
-    #paths:
-    #  - 'medease-client/**'
+    paths:
+     - 'medease-client/**'
   pull_request:
     branches: [main]
     paths:

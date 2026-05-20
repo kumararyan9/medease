@@ -1,5 +1,5 @@
-import validator from 'validator';
-import AppError from '@/utils/AppError.js';
+const validator = require('validator');
+const AppError = require('@/utils/AppError');
 
 function validateAddDoctorInput(data, imageFile) {
   const {
@@ -37,4 +37,4 @@ function validateCancelAppointment(data) {
   if (!data.appointmentId) throw new AppError('Appointment ID is required', 400);
 }
 
-export { validateAddDoctorInput, validateCancelAppointment };
+module.exports = { validateAddDoctorInput, validateCancelAppointment };

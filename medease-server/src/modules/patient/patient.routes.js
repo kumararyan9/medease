@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '@/middleware/auth.js';
-import * as patientController from './patient.controller.js';
+const { Router } = require('express');
+const { authenticate, requireRole } = require('@/middleware/auth');
+const patientController = require('./patient.controller');
 
 const router = Router();
 
@@ -18,4 +18,4 @@ router.get(
   patientController.getAppointments
 );
 
-export default router;
+module.exports = router;

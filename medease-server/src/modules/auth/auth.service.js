@@ -1,17 +1,13 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { v2 as cloudinary } from 'cloudinary';
-import userRepo from '@/repositories/user.repository.js';
-import patientProfileRepo from '@/repositories/patientProfile.repository.js';
-import doctorProfileRepo from '@/repositories/doctorProfile.repository.js';
-import Role from '@/models/role.model.js';
-import env from '@/config/env.js';
-import AppError from '@/utils/AppError.js';
-import {
-  validateRegisterInput,
-  validateLoginInput,
-  validateProfileUpdateInput,
-} from './auth.validator.js';
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { v2: cloudinary } = require('cloudinary');
+const userRepo = require('@/repositories/user.repository');
+const patientProfileRepo = require('@/repositories/patientProfile.repository');
+const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
+const Role = require('@/models/role.model');
+const env = require('@/config/env');
+const AppError = require('@/utils/AppError');
+const { validateRegisterInput, validateLoginInput, validateProfileUpdateInput } = require('./auth.validator');
 
 const roleIds = {};
 
@@ -205,4 +201,4 @@ async function updateUserProfile(userId, { name, phone, address, dob, gender }, 
   return getUserProfile(userId, 'PATIENT');
 }
 
-export { registerUser, loginUser, loginDoctor, loginAdmin, getUserProfile, updateUserProfile };
+module.exports = { registerUser, loginUser, loginDoctor, loginAdmin, getUserProfile, updateUserProfile };

@@ -1,6 +1,7 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as doctorService from './doctor.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const doctorService = require('./doctor.service');
+const { loginDoctor } = require('../auth/auth.service');
 
 const getList = asyncHandler(async (req, res) => {
   const doctors = await doctorService.getList();
@@ -8,7 +9,6 @@ const getList = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { loginDoctor } = await import('../auth/auth.service.js');
   const result = await loginDoctor(req.body.email, req.body.password);
   ApiResponse.success(res, { data: result, message: 'Login successful' });
 });
@@ -55,7 +55,7 @@ const getAvailableSlots = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: slots });
 });
 
-export {
+module.exports = {
   getList,
   login,
   getProfile,

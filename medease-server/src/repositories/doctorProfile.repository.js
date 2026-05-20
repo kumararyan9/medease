@@ -1,6 +1,6 @@
-import BaseRepository from './base.repository.js';
-import DoctorProfile from '@/models/doctorProfile.model.js';
-import '@/models/speciality.model.js';
+const BaseRepository = require('./base.repository');
+const DoctorProfile = require('@/models/doctorProfile.model');
+require('@/models/speciality.model');
 
 class DoctorProfileRepository extends BaseRepository {
   constructor() {
@@ -60,4 +60,4 @@ class DoctorProfileRepository extends BaseRepository {
   }
 }
 
-export default new DoctorProfileRepository();
+module.exports = new DoctorProfileRepository();

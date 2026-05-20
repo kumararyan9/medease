@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,4 +34,4 @@ userSchema.methods.setRoleName = function (name) {
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-export default User;
+module.exports = User;

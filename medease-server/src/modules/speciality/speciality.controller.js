@@ -1,6 +1,6 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as specialityService from './speciality.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const specialityService = require('./speciality.service');
 
 const getAll = asyncHandler(async (req, res) => {
   const specialities = await specialityService.getAll();
@@ -32,4 +32,4 @@ const remove = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: result });
 });
 
-export { getAll, getActive, getById, create, update, remove };
+module.exports = { getAll, getActive, getById, create, update, remove };

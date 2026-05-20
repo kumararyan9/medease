@@ -1,9 +1,6 @@
-import specialityRepo from '@/repositories/speciality.repository.js';
-import AppError from '@/utils/AppError.js';
-import {
-  validateCreateSpeciality,
-  validateUpdateSpeciality,
-} from './speciality.validator.js';
+const specialityRepo = require('@/repositories/speciality.repository');
+const AppError = require('@/utils/AppError');
+const { validateCreateSpeciality, validateUpdateSpeciality } = require('./speciality.validator');
 
 function toSlug(name) {
   return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -61,4 +58,4 @@ async function remove(id) {
   return { message: 'Speciality deleted successfully.' };
 }
 
-export { getAll, getActive, getById, create, update, remove };
+module.exports = { getAll, getActive, getById, create, update, remove };

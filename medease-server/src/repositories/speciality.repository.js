@@ -1,5 +1,5 @@
-import BaseRepository from './base.repository.js';
-import Speciality from '@/models/speciality.model.js';
+const BaseRepository = require('./base.repository');
+const Speciality = require('@/models/speciality.model');
 
 class SpecialityRepository extends BaseRepository {
   constructor() {
@@ -19,4 +19,4 @@ class SpecialityRepository extends BaseRepository {
   }
 }
 
-export default new SpecialityRepository();
+module.exports = new SpecialityRepository();

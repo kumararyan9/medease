@@ -238,7 +238,7 @@ const openApiSpec = {
     '/user/appointments': {
       get: {
         tags: ['Patient'],
-        summary: 'Get authenticated patient\'s appointments',
+        summary: "Get authenticated patient's appointments",
         security: [{ bearerAuth: [] }, { legacyToken: [] }],
         responses: { 200: { description: 'List of patient appointments' } },
       },
@@ -458,7 +458,7 @@ const openApiSpec = {
     '/doctor/appointments': {
       get: {
         tags: ['Doctor'],
-        summary: 'Get doctor\'s appointments',
+        summary: "Get doctor's appointments",
         security: [{ bearerAuth: [] }, { legacyDToken: [] }],
         responses: { 200: { description: 'List of appointments for the authenticated doctor' } },
       },
@@ -633,4 +633,4 @@ const openApiSpec = {
   },
 };
 
-export default openApiSpec;
+module.exports = openApiSpec;

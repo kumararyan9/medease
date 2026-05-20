@@ -1,4 +1,4 @@
-import AppError from '@/utils/AppError.js';
+const AppError = require('@/utils/AppError');
 
 function validateCreateSpeciality(data) {
   if (!data.name || !data.name.trim()) {
@@ -12,4 +12,4 @@ function validateUpdateSpeciality(data) {
   }
 }
 
-export { validateCreateSpeciality, validateUpdateSpeciality };
+module.exports = { validateCreateSpeciality, validateUpdateSpeciality };

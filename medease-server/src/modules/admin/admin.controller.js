@@ -1,6 +1,7 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as adminService from './admin.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const adminService = require('./admin.service');
+const { loginAdmin } = require('../auth/auth.service');
 
 const addDoctor = asyncHandler(async (req, res) => {
   const result = await adminService.addDoctor(req.body, req.file);
@@ -8,7 +9,6 @@ const addDoctor = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { loginAdmin } = await import('../auth/auth.service.js');
   const result = await loginAdmin(req.body.email, req.body.password);
   ApiResponse.success(res, { data: result, message: 'Login successful' });
 });
@@ -39,7 +39,7 @@ const getDashboard = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: { dashData } });
 });
 
-export {
+module.exports = {
   addDoctor,
   login,
   getAllDoctors,
