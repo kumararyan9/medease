@@ -29,6 +29,17 @@ const openApiSpec = {
           traceId: { type: 'string' },
         },
       },
+      ProfileImage: {
+        type: 'object',
+        description: 'Structured image metadata from storage service',
+        properties: {
+          url: { type: 'string', format: 'uri', description: 'CDN/public URL of the uploaded image' },
+          publicId: { type: 'string', description: 'Cloudinary public ID (used for deletion/replacement)' },
+          folder: { type: 'string', description: 'Storage folder path (e.g. medease/patients/profile)' },
+          provider: { type: 'string', enum: ['cloudinary'], description: 'Storage provider name' },
+          resourceType: { type: 'string', enum: ['image'], description: 'Type of resource stored' },
+        },
+      },
       User: {
         type: 'object',
         properties: {
@@ -36,9 +47,10 @@ const openApiSpec = {
           name: { type: 'string' },
           email: { type: 'string', format: 'email' },
           role: { type: 'string', enum: ['ADMIN', 'DOCTOR', 'PATIENT'] },
-          image: { type: 'string' },
+          image: { type: 'string', description: 'Direct image URL (legacy field, kept for backward compatibility)' },
+          profileImage: { $ref: '#/components/schemas/ProfileImage' },
           phone: { type: 'string' },
-          status: { type: 'string', enum: ['ACTIVE', 'INACTIVE', 'SUSPENDED'] },
+          isActive: { type: 'boolean' },
           createdAt: { type: 'string', format: 'date-time' },
         },
       },
@@ -57,8 +69,51 @@ const openApiSpec = {
         type: 'object',
         properties: {
           _id: { type: 'string' },
-          userId: { type: 'string' },
-          specialityId: { $ref: '#/components/schemas/Speciality' },
+          name: { type: 'string' },
+          email: { type: 'string' },
+          image: { type: 'string' },
+          profileImage: { $ref: '#/components/schemas/ProfileImage' },
+          phone: { type: 'string' },
+          speciality: { $ref: '#/components/schemas/Speciality' },
+          degree: { type: 'string' },
+          experienceYears: { type: 'number' },
+          about: { type: 'string' },
+          consultationFee: { type: 'number' },
+          address: { type: 'object' },
+          available: { type: 'boolean' },
+          languages: { type: 'array', items: { type: 'string' } },
+          ratingAverage: { type: 'number' },
+          totalPatients: { type: 'number' },
+          licenseNumber: { type: 'string' },
+          hospitalAffiliation: { type: 'string' },
+          onlineConsultationEnabled: { type: 'boolean' },
+        },
+      },
+      PatientProfile: {
+        type: 'object',
+        properties: {
+          _id: { type: 'string' },
+          name: { type: 'string' },
+          email: { type: 'string' },
+          image: { type: 'string' },
+          profileImage: { $ref: '#/components/schemas/ProfileImage' },
+          phone: { type: 'string' },
+          gender: { type: 'string' },
+          dob: { type: 'string' },
+          address: { type: 'object' },
+          bloodGroup: { type: 'string' },
+          allergies: { type: 'array', items: { type: 'string' } },
+          emergencyContact: { type: 'object' },
+        },
+      },
+      DoctorListItem: {
+        type: 'object',
+        properties: {
+          _id: { type: 'string' },
+          name: { type: 'string' },
+          image: { type: 'string' },
+          phone: { type: 'string' },
+          speciality: { $ref: '#/components/schemas/Speciality' },
           degree: { type: 'string' },
           experienceYears: { type: 'number' },
           about: { type: 'string' },
@@ -70,19 +125,6 @@ const openApiSpec = {
           totalPatients: { type: 'number' },
         },
       },
-      PatientProfile: {
-        type: 'object',
-        properties: {
-          _id: { type: 'string' },
-          userId: { type: 'string' },
-          gender: { type: 'string' },
-          dob: { type: 'string' },
-          address: { type: 'object' },
-          bloodGroup: { type: 'string' },
-          allergies: { type: 'array', items: { type: 'string' } },
-          emergencyContact: { type: 'object' },
-        },
-      },
       Appointment: {
         type: 'object',
         properties: {
@@ -92,10 +134,12 @@ const openApiSpec = {
           slotStart: { type: 'string', format: 'date-time' },
           slotEnd: { type: 'string', format: 'date-time' },
           paymentAmount: { type: 'number' },
-          status: { type: 'string', enum: ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'] },
+          status: { type: 'string', enum: ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'] },
           paymentStatus: { type: 'string', enum: ['PENDING', 'PAID', 'REFUNDED'] },
           appointmentType: { type: 'string', enum: ['ONLINE', 'OFFLINE'] },
           cancelledBy: { type: 'string', enum: ['PATIENT', 'DOCTOR', 'ADMIN'] },
+          symptoms: { type: 'string' },
+          meetingLink: { type: 'string' },
           createdAt: { type: 'string', format: 'date-time' },
         },
       },
@@ -106,6 +150,15 @@ const openApiSpec = {
           availableSlots: { type: 'array', items: { type: 'string' } },
           bookedSlots: { type: 'array', items: { type: 'string' } },
           allSlots: { type: 'array', items: { type: 'string' } },
+        },
+      },
+      ErrorResponse: {
+        type: 'object',
+        properties: {
+          success: { type: 'boolean', example: false },
+          message: { type: 'string' },
+          traceId: { type: 'string' },
+          details: { type: 'array', items: { type: 'string' }, description: 'Validation error details' },
         },
       },
     },
@@ -151,7 +204,8 @@ const openApiSpec = {
               },
             },
           },
-          400: { description: 'Validation error / email already in use' },
+          400: { description: 'Validation error / email already in use', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+          403: { description: 'User limit reached' },
         },
       },
     },
@@ -194,7 +248,8 @@ const openApiSpec = {
               },
             },
           },
-          401: { description: 'Invalid email or password' },
+          401: { description: 'Invalid email or password', content: { 'application/json': { schema: { $ref: '#/components/schemas/ErrorResponse' } } } },
+          403: { description: 'Account deactivated' },
         },
       },
     },
@@ -204,7 +259,25 @@ const openApiSpec = {
         summary: 'Get authenticated patient profile',
         security: [{ bearerAuth: [] }, { legacyToken: [] }],
         responses: {
-          200: { description: 'Patient profile data' },
+          200: {
+            description: 'Patient profile with user + profile data',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        userData: { $ref: '#/components/schemas/PatientProfile' },
+                        profileData: { $ref: '#/components/schemas/PatientProfile' },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
           401: { description: 'Authentication required' },
         },
       },
@@ -212,7 +285,8 @@ const openApiSpec = {
     '/user/update-profile': {
       post: {
         tags: ['Patient'],
-        summary: 'Update patient profile',
+        summary: 'Update patient profile (including profile image)',
+        description: 'Upload a new profile image via multipart/form-data. The image is uploaded to Cloudinary under medease/patients/profile. If the user already has a profileImage with a publicId, the old image is automatically deleted after the new one is uploaded.',
         security: [{ bearerAuth: [] }, { legacyToken: [] }],
         requestBody: {
           content: {
@@ -220,19 +294,38 @@ const openApiSpec = {
               schema: {
                 type: 'object',
                 properties: {
-                  name: { type: 'string' },
-                  phone: { type: 'string' },
-                  address: { type: 'string', description: 'JSON string { line1, line2 }' },
+                  name: { type: 'string', description: 'Full name' },
+                  phone: { type: 'string', description: 'Phone number' },
+                  address: { type: 'string', description: 'JSON string: { "line1": "...", "line2": "..." }' },
                   dob: { type: 'string', example: '1990-01-15' },
                   gender: { type: 'string', enum: ['Male', 'Female', 'Other'] },
-                  bloodGroup: { type: 'string', enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] },
-                  image: { type: 'string', format: 'binary' },
+                  image: { type: 'string', format: 'binary', description: 'Profile image file (jpeg/png/webp, max 5MB)' },
                 },
               },
             },
           },
         },
-        responses: { 200: { description: 'Profile updated' } },
+        responses: {
+          200: {
+            description: 'Profile updated — returns full profile including profileImage metadata',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        userData: { $ref: '#/components/schemas/PatientProfile' },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          400: { description: 'Validation error / invalid file type / file too large' },
+        },
       },
     },
     '/user/appointments': {
@@ -240,7 +333,26 @@ const openApiSpec = {
         tags: ['Patient'],
         summary: "Get authenticated patient's appointments",
         security: [{ bearerAuth: [] }, { legacyToken: [] }],
-        responses: { 200: { description: 'List of patient appointments' } },
+        responses: {
+          200: {
+            description: 'List of patient appointments',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        appointments: { type: 'array', items: { $ref: '#/components/schemas/Appointment' } },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
     '/user/book-appointment': {
@@ -335,6 +447,7 @@ const openApiSpec = {
       post: {
         tags: ['Admin'],
         summary: 'Add a new doctor (admin only)',
+        description: 'Creates a new doctor user + profile. The profile image is uploaded to Cloudinary under medease/doctors/profile.',
         security: [{ bearerAuth: [] }, { legacyAToken: [] }],
         requestBody: {
           required: true,
@@ -342,24 +455,28 @@ const openApiSpec = {
             'multipart/form-data': {
               schema: {
                 type: 'object',
-                required: ['name', 'email', 'password', 'specialityId', 'degree', 'experienceYears', 'about', 'fees', 'address', 'image'],
+                required: ['name', 'email', 'password', 'specialityId', 'degree', 'experienceYears', 'about', 'consultationFee', 'address', 'image'],
                 properties: {
-                  name: { type: 'string' },
+                  name: { type: 'string', description: 'Doctor full name' },
                   email: { type: 'string', format: 'email' },
                   password: { type: 'string', minLength: 8 },
                   specialityId: { type: 'string', description: 'Speciality ObjectId' },
-                  degree: { type: 'string' },
-                  experienceYears: { type: 'number' },
-                  about: { type: 'string' },
-                  fees: { type: 'number', description: 'Consultation fee' },
-                  address: { type: 'string', description: 'JSON string' },
-                  image: { type: 'string', format: 'binary' },
+                  degree: { type: 'string', description: 'Medical degree / education' },
+                  experienceYears: { type: 'number', description: 'Years of experience' },
+                  about: { type: 'string', description: 'Bio / about the doctor' },
+                  consultationFee: { type: 'number', description: 'Consultation fee' },
+                  address: { type: 'string', description: 'JSON string: { "line1": "...", "line2": "..." }' },
+                  image: { type: 'string', format: 'binary', description: 'Doctor profile image (jpeg/png/webp, max 5MB)' },
                 },
               },
             },
           },
         },
-        responses: { 201: { description: 'Doctor added successfully' } },
+        responses: {
+          201: { description: 'Doctor added successfully with profileImage metadata stored' },
+          400: { description: 'Validation error / invalid file type' },
+          409: { description: 'Email already exists' },
+        },
       },
     },
     '/admin/all-doctors': {
@@ -367,7 +484,26 @@ const openApiSpec = {
         tags: ['Admin'],
         summary: 'Get all doctors (admin only)',
         security: [{ bearerAuth: [] }, { legacyAToken: [] }],
-        responses: { 200: { description: 'List of all doctors with profiles' } },
+        responses: {
+          200: {
+            description: 'List of all doctors with profiles (includes image and profileImage fields)',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        doctors: { type: 'array', items: { $ref: '#/components/schemas/DoctorListItem' } },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
     '/admin/change-availability': {
@@ -430,7 +566,26 @@ const openApiSpec = {
       get: {
         tags: ['Doctor'],
         summary: 'Get public list of available doctors',
-        responses: { 200: { description: 'List of available doctors' } },
+        responses: {
+          200: {
+            description: 'List of available doctors',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        doctors: { type: 'array', items: { $ref: '#/components/schemas/DoctorListItem' } },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
     '/doctor/login': {
@@ -516,13 +671,33 @@ const openApiSpec = {
         tags: ['Doctor'],
         summary: 'Get doctor profile',
         security: [{ bearerAuth: [] }, { legacyDToken: [] }],
-        responses: { 200: { description: 'Doctor profile with user and professional details' } },
+        responses: {
+          200: {
+            description: 'Doctor profile with user and professional details (includes image and profileImage)',
+            content: {
+              'application/json': {
+                schema: {
+                  allOf: [
+                    { $ref: '#/components/schemas/ApiResponse' },
+                    {
+                      type: 'object',
+                      properties: {
+                        profileData: { $ref: '#/components/schemas/DoctorProfile' },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
       },
     },
     '/doctor/update-profile': {
       post: {
         tags: ['Doctor'],
-        summary: 'Update doctor profile',
+        summary: 'Update doctor profile (text fields only)',
+        description: 'Note: Doctor profile image updates are not supported via this endpoint yet.',
         security: [{ bearerAuth: [] }, { legacyDToken: [] }],
         requestBody: {
           content: {
@@ -530,11 +705,13 @@ const openApiSpec = {
               schema: {
                 type: 'object',
                 properties: {
-                  fees: { type: 'number' },
-                  address: { type: 'string', description: 'JSON string' },
+                  consultationFee: { type: 'number' },
+                  address: { type: 'string', description: 'JSON string: { "line1": "...", "line2": "..." }' },
                   available: { type: 'boolean' },
                   about: { type: 'string' },
-                  languages: { type: 'string', description: 'JSON array of strings' },
+                  languages: { type: 'string', description: 'JSON array of strings: ["English","Hindi"]' },
+                  hospitalAffiliation: { type: 'string' },
+                  onlineConsultationEnabled: { type: 'boolean' },
                 },
               },
             },

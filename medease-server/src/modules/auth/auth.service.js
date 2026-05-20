@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { v2: cloudinary } = require('cloudinary');
 const userRepo = require('@/repositories/user.repository');
+const storageService = require('@/services/storage');
 const patientProfileRepo = require('@/repositories/patientProfile.repository');
 const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
 const Role = require('@/models/role.model');
@@ -180,8 +180,12 @@ async function updateUserProfile(userId, { name, phone, address, dob, gender }, 
   if (phone) updateData.phone = phone;
 
   if (file) {
-    const result = await cloudinary.uploader.upload(file.path, { resource_type: 'image' });
-    updateData.image = result.secure_url;
+    const result = await storageService.uploadFile(
+      file,
+      storageService.FOLDER_CATEGORIES.PATIENT_PROFILE
+    );
+    updateData.image = result.url;
+    updateData.profileImage = result;
   }
 
   if (Object.keys(updateData).length > 0) {
