@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
-const { v2: cloudinary } = require('cloudinary');
 const userRepo = require('@/repositories/user.repository');
+const storageService = require('@/services/storage');
 const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
 const appointmentRepo = require('@/repositories/appointment.repository');
 const AppError = require('@/utils/AppError');
@@ -17,16 +17,18 @@ async function addDoctor(data, imageFile) {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(data.password, salt);
 
-  const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-    resource_type: 'image',
-  });
+  const imageUpload = await storageService.uploadFile(
+    imageFile,
+    storageService.FOLDER_CATEGORIES.DOCTOR_PROFILE
+  );
 
   const user = await userRepo.create({
     name: data.name,
     email: data.email,
     password: hashedPassword,
     role: 'DOCTOR',
-    image: imageUpload.secure_url,
+    image: imageUpload.url,
+    profileImage: imageUpload,
   });
 
   await doctorProfileRepo.create({

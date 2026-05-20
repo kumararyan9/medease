@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
+import { assets } from "../assets/assets_frontend/assets";
 
 const DoctorCard = ({ doctor, index = 0 }) => {
   const handleClick = () => {
     window.location.href = `/appointment/${doctor._id}`;
     window.scrollTo(0, 0);
   };
+
+  const getSpeciality = (spec) => spec?.name || spec || "";
+  const getImageSrc = (img) => img || assets.upload_area;
 
   return (
     <motion.div
@@ -20,7 +24,7 @@ const DoctorCard = ({ doctor, index = 0 }) => {
     >
       <img
         className="bg-[var(--muted-bg)] w-full"
-        src={doctor.image}
+        src={getImageSrc(doctor.image)}
         alt={doctor.name}
       />
       <div className="p-4 bg-[var(--card-bg)]">
@@ -39,7 +43,7 @@ const DoctorCard = ({ doctor, index = 0 }) => {
         <p className="text-[var(--foreground)] text-lg font-medium">
           {doctor.name}
         </p>
-        <p className="text-gray-500 text-sm">{doctor.speciality}</p>
+        <p className="text-gray-500 text-sm">{getSpeciality(doctor.speciality)}</p>
       </div>
     </motion.div>
   );

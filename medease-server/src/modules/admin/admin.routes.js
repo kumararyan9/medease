@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { authenticate, requireRole } = require('@/middleware/auth');
-const upload = require('@/middleware/multer');
+const upload = require('@/middleware/upload.middleware');
 const adminController = require('./admin.controller');
 
 const router = Router();

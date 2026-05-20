@@ -7,6 +7,13 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     roleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true },
     image: { type: String, default: '' },
+    profileImage: {
+      url: { type: String, default: '' },
+      publicId: { type: String, default: '' },
+      folder: { type: String, default: '' },
+      provider: { type: String, default: 'cloudinary' },
+      resourceType: { type: String, default: 'image' },
+    },
     phone: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date },

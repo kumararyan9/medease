@@ -30,6 +30,21 @@ const env = {
     ? process.env.DNS_SERVERS.split(',').map((s) => s.trim())
     : null,
 
+  storage: {
+    provider: process.env.STORAGE_PROVIDER || 'cloudinary',
+    mediaRoot: process.env.MEDIA_ROOT || 'medease',
+    maxFileSize: parseInt(process.env.MAX_FILE_SIZE, 10) || 5 * 1024 * 1024,
+    allowedImageTypes: process.env.ALLOWED_IMAGE_TYPES
+      ? process.env.ALLOWED_IMAGE_TYPES.split(',').map((s) => s.trim())
+      : ['image/jpeg', 'image/png', 'image/webp'],
+    folders: {
+      doctorProfile: process.env.DOCTOR_PROFILE_FOLDER || 'doctors/profile',
+      patientProfile: process.env.PATIENT_PROFILE_FOLDER || 'patients/profile',
+      clinicLogo: process.env.CLINIC_LOGO_FOLDER || 'clinics/logo',
+      reports: process.env.REPORTS_FOLDER || 'reports',
+    },
+  },
+
   cors: {
     allowedOrigins: process.env.ALLOWED_ORIGINS
       ? process.env.ALLOWED_ORIGINS.split(',').map((s) => s.trim())

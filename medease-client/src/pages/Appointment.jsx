@@ -152,7 +152,7 @@ const Appointment = () => {
             <div className={docInfo.available ? "" : "opacity-50"}>
               <img
                 className="bg-[var(--primary)] w-full sm:max-w-72 rounded-lg"
-                src={docInfo.image}
+                src={docInfo.image || null}
                 alt={docInfo.name}
               />
             </div>
@@ -164,7 +164,7 @@ const Appointment = () => {
               </p>
               <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
                 <p>
-                  {docInfo.degree} - {docInfo.speciality}
+                  {docInfo.degree} - {docInfo.speciality?.name || docInfo.speciality}
                 </p>
                 <button className="py-0.5 px-2 border text-xs rounded-full">
                   {docInfo.experience}
@@ -182,7 +182,7 @@ const Appointment = () => {
                 Appointment fee:{" "}
                 <span className="text-gray-600">
                   {currencySymbol}
-                  {docInfo.fees}
+                  {docInfo.consultationFee || docInfo.fees}
                 </span>
               </p>
             </div>
@@ -248,7 +248,7 @@ const Appointment = () => {
             </div>
           )}
 
-          <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
+          <RelatedDoctors docId={docId} speciality={docInfo.speciality?.name || docInfo.speciality} />
         </div>
       )}
     </motion.div>

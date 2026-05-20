@@ -25,12 +25,12 @@ const Contact = () => {
             Our Office
           </p>
           <p className="text-[var(--foreground)]">
-            Connaught Place, New Delhi
+            SAS Nagar Mohali, Punjab
             <br />
-            India — 110001
+            India — 140308
           </p>
           <p className="text-[var(--foreground)]">
-            Tel: +91 98765 43210
+            Tel: +91 8146812736
             <br />
             Email: support@medease.in
           </p>
