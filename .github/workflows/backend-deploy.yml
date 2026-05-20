@@ -18,10 +18,10 @@ concurrency:
 permissions:
   contents: read
 
-env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  NODE_ENV: production
+# env:
+#   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#   JWT_SECRET: ${{ secrets.JWT_SECRET }}
+#   NODE_ENV: production
 
 defaults:
   run:
