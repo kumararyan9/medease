@@ -1,6 +1,6 @@
-import logger from '@/utils/logger.js';
-import env from '@/config/env.js';
-import AppError from '@/utils/AppError.js';
+const logger = require('@/utils/logger');
+const env = require('@/config/env');
+const AppError = require('@/utils/AppError');
 
 const errorHandler = (err, req, res, _next) => {
   const traceId = req.traceId || null;
@@ -67,4 +67,4 @@ const errorHandler = (err, req, res, _next) => {
   });
 };
 
-export default errorHandler;
+module.exports = errorHandler;

@@ -1,23 +1,18 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const roleSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true, trim: true },
-    slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    name: { type: String, required: true, unique: true, enum: ['PATIENT', 'DOCTOR', 'ADMIN'] },
+    slug: { type: String, required: true, unique: true, lowercase: true },
     description: { type: String, default: '' },
-    permissions: [{ type: String }],
-    isActive: { type: Boolean, default: true },
+    permissions: { type: [String], default: [] },
   },
   {
     timestamps: true,
-    toJSON: {
-      transform(_doc, ret) {
-        delete ret.__v;
-        return ret;
-      },
-    },
+    toJSON: { transform(_doc, ret) { delete ret.__v; return ret; } },
   }
 );
 
 const Role = mongoose.models.Role || mongoose.model('Role', roleSchema);
-export default Role;
+
+module.exports = Role;

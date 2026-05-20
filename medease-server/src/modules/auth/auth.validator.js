@@ -1,5 +1,5 @@
-import validator from 'validator';
-import AppError from '@/utils/AppError.js';
+const validator = require('validator');
+const AppError = require('@/utils/AppError');
 
 function validateRegisterInput({ name, email, password }) {
   if (!name || !name.trim()) {
@@ -34,4 +34,4 @@ function validateProfileUpdateInput(data) {
   }
 }
 
-export { validateRegisterInput, validateLoginInput, validateProfileUpdateInput };
+module.exports = { validateRegisterInput, validateLoginInput, validateProfileUpdateInput };

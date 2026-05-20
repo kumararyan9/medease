@@ -1,13 +1,13 @@
-import { AsyncLocalStorage } from 'node:async_hooks';
-import rootLogger from '@/config/logger.js';
+const { AsyncLocalStorage } = require('node:async_hooks');
+const rootLogger = require('@/config/logger');
 
-export const loggerContext = new AsyncLocalStorage();
+const loggerContext = new AsyncLocalStorage();
 
 function getStore() {
   return loggerContext.getStore();
 }
 
-export function getLogger() {
+function getLogger() {
   const store = getStore();
   const traceId = store?.traceId;
   return traceId ? rootLogger.child({ traceId }) : rootLogger;
@@ -38,4 +38,6 @@ const logger = {
   },
 };
 
-export default logger;
+module.exports = logger;
+module.exports.loggerContext = loggerContext;
+module.exports.getLogger = getLogger;

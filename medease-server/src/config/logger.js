@@ -1,9 +1,9 @@
-import pino from 'pino';
-import env from './env.js';
+const pino = require('pino');
+const env = require('./env');
 
 const sensitiveFields = ['password', 'token', 'atoken', 'dtoken', 'authorization', 'secret', 'creditCard'];
 
-export function sanitizeBody(body) {
+function sanitizeBody(body) {
   if (!body || typeof body !== 'object') return body;
   const sanitized = { ...body };
   for (const key of Object.keys(sanitized)) {
@@ -45,4 +45,5 @@ const logger = pino({
   },
 });
 
-export default logger;
+module.exports = logger;
+module.exports.sanitizeBody = sanitizeBody;

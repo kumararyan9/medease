@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import dns from 'dns';
-import logger from './logger.js';
-import env from './env.js';
+const mongoose = require('mongoose');
+const dns = require('dns');
+const logger = require('./logger');
+const env = require('./env');
 
 const configureDns = () => {
   const customDns = env.dnsServers;
@@ -44,4 +44,4 @@ mongoose.connection.on('error', (err) => {
   logger.error('MongoDB connection error', { error: err.message });
 });
 
-export default connectDB;
+module.exports = connectDB;

@@ -1,5 +1,5 @@
-import validator from 'validator';
-import AppError from '@/utils/AppError.js';
+const validator = require('validator');
+const AppError = require('@/utils/AppError');
 
 function validateProfileUpdate(data) {
   if (data.phone && !validator.isMobilePhone(data.phone, 'any')) {
@@ -26,4 +26,4 @@ function validateProfileUpdate(data) {
   }
 }
 
-export { validateProfileUpdate };
+module.exports = { validateProfileUpdate };

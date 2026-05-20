@@ -1,6 +1,6 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as authService from './auth.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const authService = require('./auth.service');
 
 const register = asyncHandler(async (req, res) => {
   const result = await authService.registerUser(req.body);
@@ -32,4 +32,4 @@ const updateProfile = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: { userData: profile }, message: 'Profile updated' });
 });
 
-export { register, login, doctorLogin, adminLogin, getProfile, updateProfile };
+module.exports = { register, login, doctorLogin, adminLogin, getProfile, updateProfile };

@@ -1,10 +1,10 @@
-import bcrypt from 'bcrypt';
-import { v2 as cloudinary } from 'cloudinary';
-import userRepo from '@/repositories/user.repository.js';
-import doctorProfileRepo from '@/repositories/doctorProfile.repository.js';
-import appointmentRepo from '@/repositories/appointment.repository.js';
-import AppError from '@/utils/AppError.js';
-import { validateAddDoctorInput, validateCancelAppointment } from './admin.validator.js';
+const bcrypt = require('bcrypt');
+const { v2: cloudinary } = require('cloudinary');
+const userRepo = require('@/repositories/user.repository');
+const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
+const appointmentRepo = require('@/repositories/appointment.repository');
+const AppError = require('@/utils/AppError');
+const { validateAddDoctorInput, validateCancelAppointment } = require('./admin.validator');
 
 async function addDoctor(data, imageFile) {
   validateAddDoctorInput(data, imageFile);
@@ -115,7 +115,7 @@ async function getDashboard() {
   return { doctors, patients, appointments, latestAppointments };
 }
 
-export {
+module.exports = {
   addDoctor,
   getAllDoctors,
   changeAvailability,

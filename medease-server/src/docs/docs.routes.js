@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { apiReference } from '@scalar/express-api-reference';
-import openApiSpec from './openapi.js';
+const { Router } = require('express');
+const { apiReference } = require('@scalar/express-api-reference');
+const openApiSpec = require('./openapi');
 
 const router = Router();
 
@@ -21,4 +21,4 @@ router.use(
   })
 );
 
-export default router;
+module.exports = router;

@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { authenticate, requireRole } from '@/middleware/auth.js';
-import upload from '@/middleware/multer.js';
-import * as adminController from './admin.controller.js';
+const { Router } = require('express');
+const { authenticate, requireRole } = require('@/middleware/auth');
+const upload = require('@/middleware/multer');
+const adminController = require('./admin.controller');
 
 const router = Router();
 
@@ -29,4 +29,4 @@ router.post(
 );
 router.get('/dashboard', authenticate, requireRole('ADMIN'), adminController.getDashboard);
 
-export default router;
+module.exports = router;

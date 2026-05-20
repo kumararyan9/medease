@@ -1,5 +1,5 @@
-import multer from 'multer';
-import AppError from '@/utils/AppError.js';
+const multer = require('multer');
+const AppError = require('@/utils/AppError');
 
 const storage = multer.diskStorage({
   filename: (req, file, cb) => {
@@ -17,4 +17,4 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
-export default upload;
+module.exports = upload;

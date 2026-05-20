@@ -1,5 +1,5 @@
-import BaseRepository from './base.repository.js';
-import Appointment from '@/models/appointment.model.js';
+const BaseRepository = require('./base.repository');
+const Appointment = require('@/models/appointment.model');
 
 class AppointmentRepository extends BaseRepository {
   constructor() {
@@ -69,4 +69,4 @@ class AppointmentRepository extends BaseRepository {
   }
 }
 
-export default new AppointmentRepository();
+module.exports = new AppointmentRepository();

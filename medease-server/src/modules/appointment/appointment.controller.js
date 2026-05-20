@@ -1,6 +1,6 @@
-import asyncHandler from '@/utils/asyncHandler.js';
-import ApiResponse from '@/utils/apiResponse.js';
-import * as appointmentService from './appointment.service.js';
+const asyncHandler = require('@/utils/asyncHandler');
+const ApiResponse = require('@/utils/apiResponse');
+const appointmentService = require('./appointment.service');
 
 const create = asyncHandler(async (req, res) => {
   const { docId, slotDate, slotTime, slotStart, appointmentType, symptoms } = req.body;
@@ -42,4 +42,4 @@ const makePayment = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: result });
 });
 
-export { create, getById, cancel, makePayment };
+module.exports = { create, getById, cancel, makePayment };

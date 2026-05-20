@@ -1,8 +1,8 @@
-import doctorProfileRepo from '@/repositories/doctorProfile.repository.js';
-import appointmentRepo from '@/repositories/appointment.repository.js';
-import AppError from '@/utils/AppError.js';
-import generateTimeSlots from '@/utils/slots.js';
-import { validateProfileUpdate, validateAppointmentAction } from './doctor.validator.js';
+const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
+const appointmentRepo = require('@/repositories/appointment.repository');
+const AppError = require('@/utils/AppError');
+const generateTimeSlots = require('@/utils/slots');
+const { validateProfileUpdate, validateAppointmentAction } = require('./doctor.validator');
 
 async function getList() {
   const profiles = await doctorProfileRepo.findPopulated({ available: true });
@@ -151,7 +151,7 @@ async function getAvailableSlots(doctorId, date) {
   return generateTimeSlots(date, bookedSlotStarts);
 }
 
-export {
+module.exports = {
   getList,
   getProfile,
   updateProfile,

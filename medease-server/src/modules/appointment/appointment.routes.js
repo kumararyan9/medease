@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { authenticate } from '@/middleware/auth.js';
-import * as appointmentController from './appointment.controller.js';
+const { Router } = require('express');
+const { authenticate } = require('@/middleware/auth');
+const appointmentController = require('./appointment.controller');
 
 const router = Router();
 
@@ -9,4 +9,4 @@ router.get('/:id', authenticate, appointmentController.getById);
 router.post('/cancel-appointment', authenticate, appointmentController.cancel);
 router.post('/make-payment', authenticate, appointmentController.makePayment);
 
-export default router;
+module.exports = router;

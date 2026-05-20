@@ -1,4 +1,4 @@
-import AppError from '@/utils/AppError.js';
+const AppError = require('@/utils/AppError');
 
 function validateCreateAppointment(data) {
   const { docId, slotStart } = data;
@@ -23,4 +23,4 @@ function validatePayment(data) {
   if (!data.appointmentId) throw new AppError('Appointment ID is required.', 400);
 }
 
-export { validateCreateAppointment, validateCancelAppointment, validatePayment };
+module.exports = { validateCreateAppointment, validateCancelAppointment, validatePayment };

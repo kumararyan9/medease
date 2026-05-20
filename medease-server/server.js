@@ -1,10 +1,11 @@
-import app, { connectDB, connectCloudinary } from './src/app.js';
-import env from './src/config/env.js';
-import logger from './src/config/logger.js';
+require('module-alias/register');
+const app = require('./src/app');
+const env = require('@/config/env');
+const logger = require('@/config/logger');
 
 const start = async () => {
-  await connectDB();
-  connectCloudinary();
+  await app.connectDB();
+  app.connectCloudinary();
 
   app.listen(env.port, () => {
     logger.info(`Server running on PORT ${env.port}`);

@@ -1,11 +1,11 @@
-import { Router } from 'express';
-import authRoutes from '@/modules/auth/auth.routes.js';
-import adminRoutes from '@/modules/admin/admin.routes.js';
-import doctorRoutes from '@/modules/doctor/doctor.routes.js';
-import patientRoutes from '@/modules/patient/patient.routes.js';
-import appointmentRoutes from '@/modules/appointment/appointment.routes.js';
-import specialityRoutes from '@/modules/speciality/speciality.routes.js';
-import * as doctorController from '@/modules/doctor/doctor.controller.js';
+const { Router } = require('express');
+const authRoutes = require('@/modules/auth/auth.routes');
+const adminRoutes = require('@/modules/admin/admin.routes');
+const doctorRoutes = require('@/modules/doctor/doctor.routes');
+const patientRoutes = require('@/modules/patient/patient.routes');
+const appointmentRoutes = require('@/modules/appointment/appointment.routes');
+const specialityRoutes = require('@/modules/speciality/speciality.routes');
+const doctorController = require('@/modules/doctor/doctor.controller');
 
 const router = Router();
 
@@ -17,4 +17,4 @@ router.use('/doctor', doctorRoutes);
 router.use('/specialities', specialityRoutes);
 router.get('/doctors/:id/slots', doctorController.getAvailableSlots);
 
-export default router;
+module.exports = router;

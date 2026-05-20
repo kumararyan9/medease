@@ -1,11 +1,7 @@
-import doctorProfileRepo from '@/repositories/doctorProfile.repository.js';
-import appointmentRepo from '@/repositories/appointment.repository.js';
-import AppError from '@/utils/AppError.js';
-import {
-  validateCreateAppointment,
-  validateCancelAppointment,
-  validatePayment,
-} from './appointment.validator.js';
+const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
+const appointmentRepo = require('@/repositories/appointment.repository');
+const AppError = require('@/utils/AppError');
+const { validateCreateAppointment, validateCancelAppointment, validatePayment } = require('./appointment.validator');
 
 async function createAppointment(
   patientId,
@@ -94,4 +90,4 @@ async function makePayment(appointmentId, userId) {
   return { message: 'Payment successful.' };
 }
 
-export { createAppointment, getById, cancelAppointment, makePayment };
+module.exports = { createAppointment, getById, cancelAppointment, makePayment };
