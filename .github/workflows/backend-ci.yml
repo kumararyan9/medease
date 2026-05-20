@@ -5,8 +5,8 @@
 name: Backend CI
 
 on:
-  push:
-    branches: [dev]
+  # push:
+  #   branches: [dev]
     #paths:
     #  - 'medease-server/**'
   pull_request:
