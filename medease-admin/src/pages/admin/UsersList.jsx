@@ -180,9 +180,9 @@ const UsersList = () => {
                         <span
                           className={`inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                             user.role === "DOCTOR"
-                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
+                              ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300"
                               : user.role === "PATIENT"
-                              ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
                               : "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300"
                           }`}
                         >

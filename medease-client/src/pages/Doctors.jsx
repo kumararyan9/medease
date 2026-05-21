@@ -14,12 +14,16 @@ const Doctors = () => {
   const { doctors } = useContext(AppContext);
 
   const specialityList = [
-    { name: "General physician", slug: "general-physician" },
-    { name: "Gynecologist", slug: "gynecologist" },
+    { name: "General Physician", slug: "general-physician" },
+    { name: "Cardiologist", slug: "cardiologist" },
     { name: "Dermatologist", slug: "dermatologist" },
-    { name: "Pediatricians", slug: "pediatricians" },
-    { name: "Neurologist", slug: "neurologist" },
+    { name: "ENT Specialist", slug: "ent-specialist" },
     { name: "Gastroenterologist", slug: "gastroenterologist" },
+    { name: "Gynecologist", slug: "gynecologist" },
+    { name: "Neurologist", slug: "neurologist" },
+    { name: "Ophthalmologist", slug: "ophthalmologist" },
+    { name: "Orthopedist", slug: "orthopedist" },
+    { name: "Pediatricians", slug: "pediatricians" },
   ];
 
   const applyFilter = useCallback(() => {

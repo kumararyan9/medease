@@ -290,11 +290,14 @@ async function removeDoctor(doctorId) {
   return { message: 'Doctor removed successfully' };
 }
 
-async function getUsers({ page = 1, limit = 20, search, role, sortBy = 'createdAt', sortOrder = 'desc' }) {
+async function getUsers({ page = 1, limit = 20, search, role, sortBy, sortOrder = 'desc' }) {
+  const allowedSortFields = ['name', 'email', 'createdAt', 'lastLoginAt'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const filter = {};
 
   if (search) {
-    const regex = new RegExp(search, 'i');
+    const safe = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').slice(0, 100);
+    const regex = new RegExp(safe, 'i');
     filter.$or = [{ name: regex }, { email: regex }];
   }
 
@@ -304,7 +307,7 @@ async function getUsers({ page = 1, limit = 20, search, role, sortBy = 'createdA
   }
 
   const skip = (Math.max(1, page) - 1) * Math.max(1, limit);
-  const sort = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
+  const sort = { [safeSortBy]: sortOrder === 'asc' ? 1 : -1 };
 
   const [users, total] = await Promise.all([
     userRepo

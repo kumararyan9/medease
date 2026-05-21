@@ -1,21 +1,24 @@
 const express = require('express');
+const helmet = require('helmet');
 const corsMiddleware = require('./middleware/cors');
 const connectDB = require('./config/db');
 const connectCloudinary = require('./config/cloudinary');
 const traceIdMiddleware = require('./middleware/traceId');
 const { requestLoggerMiddleware, bodyLoggerMiddleware } = require('./middleware/requestLogger');
+const { generalLimiter } = require('./middleware/rateLimiter');
 const errorHandler = require('./middleware/errorHandler');
 const routes = require('./routes/index');
-const docsRoutes = require('./routes/index');
 
 const app = express();
 
+app.use(helmet());
 app.use(corsMiddleware);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(traceIdMiddleware);
 app.use(requestLoggerMiddleware);
 app.use(bodyLoggerMiddleware);
+app.use('/api', generalLimiter);
 
 app.get('/', (req, res) => {
   res.json({
@@ -26,7 +29,6 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use(docsRoutes);
 app.use('/api', routes);
 
 app.use((req, res) => {

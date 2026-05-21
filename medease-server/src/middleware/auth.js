@@ -27,14 +27,6 @@ const authenticate = asyncHandler(async (req, res, next) => {
     throw new AppError('Invalid or expired token', 401);
   }
 
-  if (typeof decoded === 'string') {
-    if (decoded === env.admin.email + env.admin.password) {
-      req.user = { id: 'admin', role: 'ADMIN', roleSlug: 'admin', permissions: [], name: 'Admin' };
-      return next();
-    }
-    throw new AppError('Invalid token', 401);
-  }
-
   if (decoded.id === 'admin') {
     req.user = { id: 'admin', role: 'ADMIN', roleSlug: 'admin', permissions: [], name: 'Admin' };
     return next();
