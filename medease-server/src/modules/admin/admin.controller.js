@@ -49,6 +49,11 @@ const removeDoctor = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: result, message: 'Doctor removed successfully' });
 });
 
+const getUsers = asyncHandler(async (req, res) => {
+  const result = await adminService.getUsers(req.query);
+  ApiResponse.success(res, { data: result });
+});
+
 module.exports = {
   addDoctor,
   login,
@@ -59,4 +64,5 @@ module.exports = {
   getDashboard,
   updateDoctor,
   removeDoctor,
+  getUsers,
 };

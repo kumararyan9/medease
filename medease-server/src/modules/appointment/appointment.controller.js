@@ -7,7 +7,16 @@ const create = asyncHandler(async (req, res) => {
 
   let slotStartISO = slotStart;
   if (!slotStartISO && slotDate && slotTime) {
-    const parsed = new Date(`${slotDate}T${slotTime}:00.000Z`);
+    const parts = slotDate.split('_');
+    if (parts.length !== 3) {
+      return ApiResponse.error(res, { message: 'Invalid slotDate or slotTime format.' });
+    }
+    const [day, month, year] = parts;
+    const [timePart, modifier] = slotTime.split(' ');
+    let [hours, minutes] = timePart.split(':').map(Number);
+    if (modifier?.toUpperCase() === 'PM' && hours !== 12) hours += 12;
+    if (modifier?.toUpperCase() === 'AM' && hours === 12) hours = 0;
+    const parsed = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
     if (isNaN(parsed.getTime())) {
       return ApiResponse.error(res, { message: 'Invalid slotDate or slotTime format.' });
     }

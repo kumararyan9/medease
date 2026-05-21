@@ -63,14 +63,14 @@ export const assets = {
 
 export const specialityData = [
     {
-        speciality: 'General physician',
+        speciality: 'General Physician',
         slug: 'general-physician',
         image: General_physician
     },
     {
-        speciality: 'Gynecologist',
-        slug: 'gynecologist',
-        image: Gynecologist
+        speciality: 'Cardiologist',
+        slug: 'cardiologist',
+        image: General_physician
     },
     {
         speciality: 'Dermatologist',
@@ -78,9 +78,19 @@ export const specialityData = [
         image: Dermatologist
     },
     {
-        speciality: 'Pediatricians',
-        slug: 'pediatricians',
-        image: Pediatricians
+        speciality: 'ENT Specialist',
+        slug: 'ent-specialist',
+        image: General_physician
+    },
+    {
+        speciality: 'Gastroenterologist',
+        slug: 'gastroenterologist',
+        image: Gastroenterologist
+    },
+    {
+        speciality: 'Gynecologist',
+        slug: 'gynecologist',
+        image: Gynecologist
     },
     {
         speciality: 'Neurologist',
@@ -88,9 +98,19 @@ export const specialityData = [
         image: Neurologist
     },
     {
-        speciality: 'Gastroenterologist',
-        slug: 'gastroenterologist',
-        image: Gastroenterologist
+        speciality: 'Ophthalmologist',
+        slug: 'ophthalmologist',
+        image: General_physician
+    },
+    {
+        speciality: 'Orthopedist',
+        slug: 'orthopedist',
+        image: General_physician
+    },
+    {
+        speciality: 'Pediatricians',
+        slug: 'pediatricians',
+        image: Pediatricians
     },
 ]
 

@@ -13,6 +13,7 @@ const adminNavLinks = [
   },
   { to: "/admin/add-doctor", icon: "add", label: "Add Doctor" },
   { to: "/admin/doctors-list", icon: "home", label: "Doctor List" },
+  { to: "/admin/users", icon: "people", label: "Users" },
 ];
 
 const doctorNavLinks = [

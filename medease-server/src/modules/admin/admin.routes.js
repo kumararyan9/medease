@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const { authenticate, requireRole } = require('@/middleware/auth');
 const upload = require('@/middleware/upload.middleware');
+const { authLimiter } = require('@/middleware/rateLimiter');
 const adminController = require('./admin.controller');
 
 const router = Router();
 
-router.post('/login', adminController.login);
+router.post('/login', authLimiter, adminController.login);
 router.post(
   '/add-doctor',
   authenticate,
@@ -41,5 +42,6 @@ router.delete(
   requireRole('ADMIN'),
   adminController.removeDoctor
 );
+router.get('/users', authenticate, requireRole('ADMIN'), adminController.getUsers);
 
 module.exports = router;

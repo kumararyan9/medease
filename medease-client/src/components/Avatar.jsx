@@ -23,7 +23,7 @@ const Avatar = ({ src, name = "", size = "md", className = "", rounded = "rounde
   if (!src || failed) {
     return (
       <div
-        className={`${dimClass} ${rounded} ${className} flex items-center justify-center font-semibold bg-gray-100 dark:bg-[var(--muted-bg)] text-[var(--primary)] shrink-0 select-none`}
+        className={`${dimClass} ${rounded} ${className} flex items-center justify-center font-semibold bg-[var(--muted-bg)] text-[var(--primary)] shrink-0 select-none border border-[var(--border)]`}
       >
         {initials || (
           <svg className="w-1/2 h-1/2 text-[var(--primary)]/40" fill="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@ const Avatar = ({ src, name = "", size = "md", className = "", rounded = "rounde
       src={src}
       alt={name}
       onError={() => setFailed(true)}
-      className={`${dimClass} ${rounded} ${className} object-cover border border-gray-200 dark:border-[var(--border)] shrink-0`}
+      className={`${dimClass} ${rounded} ${className} object-cover border border-[var(--border)] shrink-0`}
     />
   );
 };
