@@ -124,7 +124,6 @@ async function cancelAppointment(appointmentId) {
 
 async function getDashboard() {
   const patientRoleId = await getRoleId('patient');
-  const doctorRoleId = await getRoleId('doctor');
 
   const [
     doctors,
@@ -291,6 +290,55 @@ async function removeDoctor(doctorId) {
   return { message: 'Doctor removed successfully' };
 }
 
+async function getUsers({ page = 1, limit = 20, search, role, sortBy = 'createdAt', sortOrder = 'desc' }) {
+  const filter = {};
+
+  if (search) {
+    const regex = new RegExp(search, 'i');
+    filter.$or = [{ name: regex }, { email: regex }];
+  }
+
+  if (role) {
+    const roleId = await getRoleId(role.toLowerCase());
+    if (roleId) filter.roleId = roleId;
+  }
+
+  const skip = (Math.max(1, page) - 1) * Math.max(1, limit);
+  const sort = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
+
+  const [users, total] = await Promise.all([
+    userRepo
+      .modelInstance()
+      .find(filter)
+      .populate('roleId', 'name slug')
+      .select('-profileImage')
+      .sort(sort)
+      .skip(skip)
+      .limit(Math.max(1, limit)),
+    userRepo.count(filter),
+  ]);
+
+  return {
+    users: users.map((u) => ({
+      _id: u._id,
+      name: u.name,
+      email: u.email,
+      image: u.image,
+      phone: u.phone,
+      role: u.roleId?.name || u.roleId?.slug || '',
+      isActive: u.isActive,
+      createdAt: u.createdAt,
+      lastLoginAt: u.lastLoginAt,
+    })),
+    pagination: {
+      page: Math.max(1, page),
+      limit: Math.max(1, limit),
+      total,
+      totalPages: Math.ceil(total / Math.max(1, limit)),
+    },
+  };
+}
+
 module.exports = {
   addDoctor,
   getAllDoctors,
@@ -300,4 +348,5 @@ module.exports = {
   getDashboard,
   updateDoctor,
   removeDoctor,
+  getUsers,
 };

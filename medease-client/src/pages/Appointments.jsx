@@ -3,8 +3,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "sonner";
 import ConfirmModal from "../components/ConfirmModal";
-import { motion } from "framer-motion";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Appointments = () => {
   const { backendUrl, token, getDoctorsData, currencySymbol } =
@@ -29,7 +28,36 @@ const Appointments = () => {
         headers: { token },
       });
       if (data.success) {
-        setAppointments(data.appointments.reverse());
+        const transformed = (data.appointments || []).map((apt) => {
+          if (apt.docData) return apt;
+          const docUser = apt.doctorId || {};
+          const slotDate = new Date(apt.slotStart);
+          const dd = String(slotDate.getDate()).padStart(2, "0");
+          const mm = String(slotDate.getMonth() + 1).padStart(2, "0");
+          const yyyy = slotDate.getFullYear();
+          const hours = slotDate.getHours();
+          const mins = String(slotDate.getMinutes()).padStart(2, "0");
+          const ampm = hours >= 12 ? "PM" : "AM";
+          const h12 = hours % 12 || 12;
+          return {
+            _id: apt._id,
+            docData: {
+              image: docUser.image || "",
+              name: docUser.name || "",
+              speciality: docUser.speciality || "",
+              address: docUser.address || { line1: "", line2: "" },
+              consultationFee: apt.paymentAmount || 0,
+              fees: apt.paymentAmount || 0,
+            },
+            slotDate: `${dd}_${mm}_${yyyy}`,
+            slotTime: `${String(h12).padStart(2, "0")}:${mins} ${ampm}`,
+            amount: apt.paymentAmount || 0,
+            payment: apt.paymentStatus === "PAID",
+            cancelled: apt.status === "CANCELLED",
+            isCompleted: apt.status === "COMPLETED",
+          };
+        });
+        setAppointments(transformed.reverse());
       }
     } catch (error) {
       toast.error(
@@ -99,55 +127,63 @@ const Appointments = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <p className="pb-3 mt-12 font-medium text-zinc-700 border-b border-[var(--border)]">
+      <p className="pb-3 mt-12 font-medium text-[var(--foreground)] border-b border-[var(--border)]">
         My Appointments
       </p>
+      {appointments.length === 0 ? (
+        <p className="text-center text-[var(--foreground)] mt-20 text-sm">
+          No appointments yet.
+        </p>
+      ) : null}
       <div>
         {appointments.map((doc, index) => (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b border-[var(--border)]"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 py-4 border-b border-[var(--border)]"
             key={index}
           >
-            <div>
+            <div className="flex-shrink-0">
               <img
-                className="w-32 bg-[var(--muted-bg)] rounded"
+                className="w-full sm:w-32 aspect-square object-cover bg-[var(--muted-bg)] rounded"
                 src={doc.docData.image || null}
                 alt=""
               />
             </div>
-            <div className="md:flex-1 text-sm text-zinc-600">
-              <p className="text-neutral-800 font-semibold">
-                {doc.docData.name}
+            <div className="flex-1 text-sm text-[var(--foreground)] space-y-0.5">
+              <p className="text-base font-semibold">{doc.docData.name}</p>
+              <p className="text-[var(--foreground)]/70">
+                {doc.docData.speciality?.name || doc.docData.speciality}
               </p>
-              <p>{doc.docData.speciality?.name || doc.docData.speciality}</p>
-              <p className="text-zinc-700 font-medium mt-1">Address:</p>
-              <p className="text-xs">{doc.docData.address.line1}</p>
-              <p className="text-xs">{doc.docData.address.line2}</p>
-              <p className="text-xs mt-1">
-                <span className="text-sm text-neutral-700 font-medium">
-                  Date & Time:
-                </span>{" "}
-                {formatDateString(doc.slotDate)} | {doc.slotTime}
+              <p className="font-medium mt-2">Address:</p>
+              <p className="text-xs text-[var(--foreground)]/70">
+                {doc.docData.address.line1}
+              </p>
+              <p className="text-xs text-[var(--foreground)]/70">
+                {doc.docData.address.line2}
+              </p>
+              <p className="text-xs mt-2">
+                <span className="text-sm font-medium">Date & Time:</span>{" "}
+                <span className="text-[var(--foreground)]/70">
+                  {formatDateString(doc.slotDate)} | {doc.slotTime}
+                </span>
               </p>
             </div>
-            <div></div>
-            <div className="flex flex-col gap-2 justify-end">
+            <div className="flex flex-row sm:flex-col gap-2 sm:justify-end sm:min-w-40">
               {!doc.payment && !doc.cancelled && !doc.isCompleted && (
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handlePayClick(doc._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer border-[var(--border)]"
+                  className="flex-1 sm:flex-none text-sm text-center py-2 px-4 border rounded hover:bg-[var(--primary)] hover:text-white transition-all duration-300 cursor-pointer border-[var(--border)] text-[var(--foreground)]/70 hover:border-[var(--primary)]"
                 >
                   Pay Online
                 </motion.button>
               )}
 
               {doc.payment && !doc.cancelled && !doc.isCompleted && (
-                <button className="text-sm text-white bg-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded cursor-pointer">
+                <button className="flex-1 sm:flex-none text-sm text-white bg-green-600 text-center py-2 px-4 rounded cursor-pointer">
                   Payment Completed
                 </button>
               )}
@@ -157,21 +193,21 @@ const Appointments = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleCancelClick(doc._id)}
-                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer border-[var(--border)]"
+                  className="flex-1 sm:flex-none text-sm text-center py-2 px-4 border rounded hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300 cursor-pointer border-[var(--border)] text-[var(--foreground)]/70"
                 >
                   Cancel appointment
                 </motion.button>
               )}
 
               {doc.cancelled && !doc.isCompleted && (
-                <button className="text-sm text-red-500 text-center sm:min-w-48 py-2 border border-red-500 rounded cursor-pointer">
+                <button className="flex-1 sm:flex-none text-sm text-red-500 text-center py-2 px-4 border border-red-500/30 bg-red-500/5 rounded cursor-pointer">
                   Appointment Cancelled
                 </button>
               )}
 
               {doc.isCompleted && (
-                <button className="text-sm text-green-500 text-center sm:min-w-48 py-2 border border-green-500 rounded cursor-pointer">
-                  Appointment Completed
+                <button className="flex-1 sm:flex-none text-sm text-green-600 text-center py-2 px-4 border border-green-600/30 bg-green-600/5 rounded cursor-pointer">
+                  Completed
                 </button>
               )}
             </div>

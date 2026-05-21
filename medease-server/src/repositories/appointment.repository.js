@@ -29,10 +29,6 @@ class AppointmentRepository extends BaseRepository {
     return this.model
       .find({ patientId })
       .populate('doctorId', 'name email image')
-      .populate({
-        path: 'doctorId',
-        populate: { path: 'profile', model: 'DoctorProfile' },
-      })
       .sort({ slotStart: -1 });
   }
 

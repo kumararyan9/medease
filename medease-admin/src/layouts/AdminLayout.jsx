@@ -5,6 +5,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import AllAppointments from "../pages/admin/AllAppointments";
 import AddDoctor from "../pages/admin/AddDoctor";
 import DoctorsList from "../pages/admin/DoctorsList";
+import UsersList from "../pages/admin/UsersList";
 import NotAuthorized from "../pages/auth/NotAuthorized";
 
 const AdminLayout = () => (
@@ -17,6 +18,7 @@ const AdminLayout = () => (
         <Route path="all-appointments" element={<AllAppointments />} />
         <Route path="add-doctor" element={<AddDoctor />} />
         <Route path="doctors-list" element={<DoctorsList />} />
+        <Route path="users" element={<UsersList />} />
 
         <Route path="*" element={<NotAuthorized />} />
       </Routes>

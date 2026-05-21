@@ -4,7 +4,6 @@ import DoctorCard from "../../components/DoctorCard";
 import DoctorEditDrawer from "../../components/DoctorEditDrawer";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { toast } from "sonner";
 
 const DoctorsList = () => {
   const { doctors, aToken, getAllDoctors, backendUrl } = useContext(AdminContext);

@@ -41,5 +41,6 @@ router.delete(
   requireRole('ADMIN'),
   adminController.removeDoctor
 );
+router.get('/users', authenticate, requireRole('ADMIN'), adminController.getUsers);
 
 module.exports = router;

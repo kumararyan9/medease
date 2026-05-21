@@ -1,6 +1,7 @@
 const userRepo = require('@/repositories/user.repository');
 const patientProfileRepo = require('@/repositories/patientProfile.repository');
 const appointmentRepo = require('@/repositories/appointment.repository');
+const doctorProfileRepo = require('@/repositories/doctorProfile.repository');
 const AppError = require('@/utils/AppError');
 const { validateProfileUpdate } = require('./patient.validator');
 
@@ -56,7 +57,46 @@ async function updateProfile(userId, data) {
 }
 
 async function getAppointments(userId) {
-  return appointmentRepo.findPatientAppointments(userId);
+  const appointments = await appointmentRepo.findPatientAppointments(userId);
+
+  const doctorIds = [...new Set(appointments.map((a) => a.doctorId?._id).filter(Boolean))];
+  const profiles = await doctorProfileRepo.find({ userId: { $in: doctorIds } });
+  const profileMap = {};
+  for (const p of profiles) {
+    profileMap[p.userId.toString()] = p;
+  }
+
+  return appointments.map((apt) => {
+    const docUser = apt.doctorId || {};
+    const profile = profileMap[docUser._id?.toString()] || {};
+    const slotDate = new Date(apt.slotStart);
+    const dd = String(slotDate.getDate()).padStart(2, '0');
+    const mm = String(slotDate.getMonth() + 1).padStart(2, '0');
+    const yyyy = slotDate.getFullYear();
+    const hours = slotDate.getHours();
+    const minutes = String(slotDate.getMinutes()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const h12 = hours % 12 || 12;
+    const timeStr = `${String(h12).padStart(2, '0')}:${minutes} ${ampm}`;
+
+    return {
+      _id: apt._id,
+      docData: {
+        image: docUser.image || '',
+        name: docUser.name || '',
+        speciality: profile.specialityId || '',
+        address: profile.address || { line1: '', line2: '' },
+        consultationFee: profile.consultationFee || 0,
+        fees: profile.consultationFee || 0,
+      },
+      slotDate: `${dd}_${mm}_${yyyy}`,
+      slotTime: timeStr,
+      amount: apt.paymentAmount || 0,
+      payment: apt.paymentStatus === 'PAID',
+      cancelled: apt.status === 'CANCELLED',
+      isCompleted: apt.status === 'COMPLETED',
+    };
+  });
 }
 
 module.exports = { getProfile, updateProfile, getAppointments };
