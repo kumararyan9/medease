@@ -7,7 +7,11 @@ const create = asyncHandler(async (req, res) => {
 
   let slotStartISO = slotStart;
   if (!slotStartISO && slotDate && slotTime) {
-    slotStartISO = new Date(`${slotDate}T${slotTime}:00.000Z`).toISOString();
+    const parsed = new Date(`${slotDate}T${slotTime}:00.000Z`);
+    if (isNaN(parsed.getTime())) {
+      return ApiResponse.error(res, { message: 'Invalid slotDate or slotTime format.' });
+    }
+    slotStartISO = parsed.toISOString();
   }
 
   const appointment = await appointmentService.createAppointment(

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { DoctorContext } from "../../context/DoctorContext";
 import { motion } from "framer-motion";
 

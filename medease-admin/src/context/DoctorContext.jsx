@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, createContext } from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const DoctorContext = createContext();

@@ -1,6 +1,6 @@
-import { useState, createContext } from "react";
+import { useState, useCallback, createContext } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AdminContext = createContext();
@@ -67,7 +67,7 @@ export const AdminContextProvider = ({ children }) => {
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const getAllDoctors = async () => {
+  const getAllDoctors = useCallback(async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/admin/all-doctors", {
         headers: { aToken },
@@ -78,7 +78,7 @@ export const AdminContextProvider = ({ children }) => {
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch doctors");
     }
-  };
+  }, [backendUrl, aToken]);
 
   const changeAvailability = async (docId) => {
     try {
@@ -126,7 +126,7 @@ export const AdminContextProvider = ({ children }) => {
     }
   };
 
-  const getDashData = async () => {
+  const getDashData = useCallback(async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/admin/dashboard", {
         headers: { aToken },
@@ -137,13 +137,16 @@ export const AdminContextProvider = ({ children }) => {
           doctors: dd.doctors || 0,
           patients: dd.patients || 0,
           appointments: dd.appointments || 0,
+          revenue: dd.revenue || { totalRevenue: 0, pendingRevenue: 0, collectedRevenue: 0 },
+          appointmentStatus: dd.appointmentStatus || { PENDING: 0, CONFIRMED: 0, COMPLETED: 0, CANCELLED: 0, NO_SHOW: 0 },
+          monthlyAnalytics: dd.monthlyAnalytics || [],
           latestAppointments: (dd.latestAppointments || []).map(transformAppointment),
         });
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to load Dashboard data");
     }
-  };
+  }, [backendUrl, aToken]);
 
   const value = {
     aToken,

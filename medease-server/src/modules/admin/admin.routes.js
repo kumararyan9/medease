@@ -28,5 +28,18 @@ router.post(
   adminController.cancelAppointment
 );
 router.get('/dashboard', authenticate, requireRole('ADMIN'), adminController.getDashboard);
+router.put(
+  '/update-doctor/:id',
+  authenticate,
+  requireRole('ADMIN'),
+  upload.single('image'),
+  adminController.updateDoctor
+);
+router.delete(
+  '/doctors/:id',
+  authenticate,
+  requireRole('ADMIN'),
+  adminController.removeDoctor
+);
 
 module.exports = router;
