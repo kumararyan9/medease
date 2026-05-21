@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AdminContextProvider } from "./context/AdminContext.jsx";
 import { DoctorContextProvider } from "./context/DoctorContext.jsx";
 import { AppContextProvider } from "./context/AppContext.jsx";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -17,7 +17,11 @@ createRoot(document.getElementById("root")).render(
           <DoctorContextProvider>
             <AppContextProvider>
               <App />
-              <ToastContainer />
+              <Toaster
+                position="bottom-right"
+                richColors
+                closeButton
+              />
             </AppContextProvider>
           </DoctorContextProvider>
         </AdminContextProvider>

@@ -175,17 +175,30 @@ async function getUserProfile(userId, role) {
 async function updateUserProfile(userId, { name, phone, address, dob, gender }, file) {
   validateProfileUpdateInput({ name, phone });
 
+  const user = await userRepo.findById(userId);
+
   const updateData = {};
   if (name) updateData.name = name;
   if (phone) updateData.phone = phone;
 
   if (file) {
-    const result = await storageService.uploadFile(
-      file,
-      storageService.FOLDER_CATEGORIES.PATIENT_PROFILE
-    );
-    updateData.image = result.url;
-    updateData.profileImage = result;
+    const oldPublicId = user?.profileImage?.publicId;
+    if (oldPublicId) {
+      const result = await storageService.replaceFile(
+        oldPublicId,
+        file,
+        storageService.FOLDER_CATEGORIES.PATIENT_PROFILE
+      );
+      updateData.image = result.url;
+      updateData.profileImage = result;
+    } else {
+      const result = await storageService.uploadFile(
+        file,
+        storageService.FOLDER_CATEGORIES.PATIENT_PROFILE
+      );
+      updateData.image = result.url;
+      updateData.profileImage = result;
+    }
   }
 
   if (Object.keys(updateData).length > 0) {

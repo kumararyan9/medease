@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets_frontend/assets";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 const Profile = () => {

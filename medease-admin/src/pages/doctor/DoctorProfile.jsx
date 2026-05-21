@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { DoctorContext } from "../../context/DoctorContext";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 const DoctorProfile = () => {

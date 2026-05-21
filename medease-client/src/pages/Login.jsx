@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";

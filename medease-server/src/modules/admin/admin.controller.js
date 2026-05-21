@@ -39,6 +39,16 @@ const getDashboard = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { data: { dashData } });
 });
 
+const updateDoctor = asyncHandler(async (req, res) => {
+  const result = await adminService.updateDoctor(req.params.id, req.body, req.file);
+  ApiResponse.success(res, { data: result, message: 'Doctor updated successfully' });
+});
+
+const removeDoctor = asyncHandler(async (req, res) => {
+  const result = await adminService.removeDoctor(req.params.id);
+  ApiResponse.success(res, { data: result, message: 'Doctor removed successfully' });
+});
+
 module.exports = {
   addDoctor,
   login,
@@ -47,4 +57,6 @@ module.exports = {
   getAllAppointments,
   cancelAppointment,
   getDashboard,
+  updateDoctor,
+  removeDoctor,
 };

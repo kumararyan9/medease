@@ -10,13 +10,13 @@ import Appointment from "./pages/Appointment";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%]">
-      <ToastContainer />
+      <Toaster position="bottom-right" richColors closeButton />
       <Navbar />
       <ScrollToTop />
       <Routes>

@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import ConfirmModal from "../components/ConfirmModal";
 import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";

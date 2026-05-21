@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets_frontend/assets";
 import RelatedDoctors from "../components/RelatedDoctors";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import axios from "axios";
 import { motion } from "framer-motion";
 
